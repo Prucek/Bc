@@ -136,8 +136,8 @@ def extract_review_info(html):
 
         write_into_file(REVIEW_FILE,string)
 
-
     return count
+
 
 if __name__ == '__main__':
 
@@ -147,18 +147,18 @@ if __name__ == '__main__':
         os.remove(BOOK_FILE)
     if os.path.exists(REVIEW_FILE):
         os.remove(REVIEW_FILE)
-    # try:
-    ok = 0
-    wrong = 0
-    for filename in os.listdir(path):
-        with open(os.path.join(path, filename), 'r', encoding='utf-8') as f:
-            value = extract_book_info(f)
-            if value == True:
-                ok = ok + 1
-            if value == False:
-                wrong = wrong + 1
-    # except:
-    #     print('Wrong directories or files')
+    try:
+        ok = 0
+        wrong = 0
+        for filename in os.listdir(path):
+            with open(os.path.join(path, filename), 'r', encoding='utf-8') as f:
+                value = extract_book_info(f)
+                if value == True:
+                    ok = ok + 1
+                if value == False:
+                    wrong = wrong + 1
+    except:
+        print('Wrong directories or files')
 
     print('Written ',ok,' book infos into ', BOOK_FILE)
     print('There were ', wrong, ' wrong files in this direcotry')
