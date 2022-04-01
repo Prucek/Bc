@@ -7,6 +7,7 @@ import string
 import os
 import time
 from multiprocessing import Pool
+import re
 
 
 def crawl(pages):
@@ -29,8 +30,8 @@ def crawl(pages):
 def get_links():
     #                                      page number, query: a-z
     url = "https://www.goodreads.com/search?page={}&q={}&qid=EjxrVfJl1S&search_type=books&tab=books&utf8=%E2%9C%93"
-    for page in range(1,2):
-        for i in range(1,len(string.ascii_lowercase)):
+    for page in range(1,2): # 1-100
+        for i in range(1,len(string.ascii_lowercase)): # a-z
             pagelist.append(url.format(page,string.ascii_lowercase[i]))
 
 
@@ -45,7 +46,8 @@ def change_path():
 def write_file(page):
     r = requests.get(page)
     soup = BeautifulSoup(r.content, "html.parser")
-    title = soup.find("title").text.strip() + ".html"
+    title = soup.find("title").text.strip() 
+    title = re.sub("[^0-9a-zA-Z]+", "_", title) + ".html"
     open(title, 'wb+').write(r.content)
 
 
