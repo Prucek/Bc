@@ -1,0 +1,170 @@
+% Autor: Peter Rúček
+
+\chapter{Úvod}
+
+Keď sa zrodí nápad na knihu, je spočiatku jedno, o aký príbeh ide. Skvelý nápad je skvelý nápad. Ale definovanie typu príbehu, pochopenie základných tém a poznanie, kam príbeh komerčne patrí, jasne pomáha určiť štruktúru aj smer.
+
+Pokiaľ ide o žánre a typy zápletiek, počet rôznych typov sa pohybuje od 1 po čokoľvek. Žánre sa formujú sa podľa konvencií, ktoré sa časom menia, keďže kultúry vymýšľajú nové žánre a prestávajú používať staré. Diela často zapadajú do viacerých žánrov prostredníctvom vypožičiavania a rekombinácie týchto konvencií. No napriek tomu sa žánre stali najpopulárnejším spôsobom ako klasifikovať umenie.
+
+Naproti tomu typy zápletiek sú viac-menej nemenné, a predsa skoro vôbec nepoužívané. Pre dejové línie typu \textit{morálne dilema} alebo \textit{zneužitie sily} bolo určite napísaných, a určite ešte aj bude, veľa kníh. Definovanie však týchto základných kľúčových dejových línií je problematické. Na toto téma bolo napísaných viacero kníh a článkov, no myšlienky autorov sú veľmi odlišné a nevedia sa zhodnúť ani v tom koľko by ich malo asi byť. Niektorý tvrdia, že ich je 20, iný ich rátajú v tisícoch. 
+
+Táto práca sa zameriava na hľadanie týchto kľúčových dejových línií v zhrnutiach dejov a užívateľských recenziách, ktoré sa získavajú zo sociálnych sietí. Systém je navrhnutý tak, že dokáže pracovať s akýmkoľvek dejom a na základe strojového učenia systém predpovedá o aký typ deja by sa podľa jeho názoru mohlo jednať.
+
+Ciele tejto práce by sa dali využiť v sociálnych sieťach týkajúcich sa nielen kníh, kde by diela mohli byť klasifikované podľa týchto kľúčových dejových línií. Slúžili by pri vyhľadávaní, keď si užívateľ nevie spomenúť na názov knihy alebo by sa mohli takto hľadať podobnosti v dielach a navrhovať tak obdobné pri prezeraní konkrétnej knihy.
+
+Práca je členená do šiestich kapitol. V kapitole \ref{teoria} je uvedený teoretický pohľad, potrebný pre pochopenie problematiky. Zaoberá sa popisom deja, prehľadávaním webu, klasifikačnými metódami a následne uvedením doterajších a aj súčasných prístupov strojového učenia v spracovaní prirodzeného jazyka. Návrhom výsledného systému analýz sa venuje kapitola \ref{navrh}. Nasleduje kapitola \ref{implementacia}, v ktorej je popísaná implementácia tohoto systému. Kapitola \ref{experimenty} popisuje jednotlivé experimenty nad dátami. Záverečná \ref{zaver}. kapitola zhodnocuje ciele systému a dosiahnuté výsledky.
+
+\chapter{Rozbor riešenej problematiky }
+\label{teoria}
+
+\todo{Po dopisani teorie dopis toto}
+
+\section{Príbeh}
+Základom pre pochopenie kľúčových dejových línií a ich analýzu je pochopenie čo je to príbeh, z čoho sa skladá a ako to súvisí s dejom. Nasledujúce podkapitoly vychádzajú \linebreak
+z \cite{Rosaria:2004} a \cite{Roberts:1987}.
+
+\subsection*{Dej}
+
+Dej je základ pre príbeh, založený na protichodných ľudských motiváciách, s činmi vyplývajúcimi z uveriteľnej a realistickej ľudskej reakcie. To znamená, že konflikt je základná časť, ktorú je potrebné vytvoriť, aby sa vytvoril súbor udalostí pri formovaní príbehu. Konflikt určí ďalšiu akciu alebo situáciu. Bude to určujúci faktor pre vytvorenie hlavnej štruktúry príbehu.
+ 
+Dejom príbehu je teda nastolenie konfliktu a dôsledky, variácie a vývoj, ktoré z neho pramenia. Ďalej ním myslíme myšlienku, ktorá určuje, ako bude príbeh plynúť. Teda bude spájať jednu akciu s druhou, aby bol príbeh dobre organizovaný. V dobre vykreslenom príbehu nie je nič irelevantné; všetko spolu súvisí. V príbehu je čas dôležitý nielen preto, že jedna vec sa deje za druhou, ale preto, že jedna vec sa deje kvôli druhej.
+
+Tak ako dej plynie, možno väčšinu dejov zaradiť do tejto tradičnej dejovej štruktúry, viď obrázok \ref{climax} :
+\begin{itemize}
+	\item \textbf{Expozícia (Úvod):} Expozícia je rozloženie a uvedenie základných prvkov v príbehu: hlavné postavy, ich pozadie, ich charakteristiky, ciele, obmedzenia a potenciál. Predstavuje všetko, čo bude v príbehu dôležité.
+    \item \textbf{Kolízia (Zápletka):} Kolízia označuje začiatok veľkého konfliktu v príbehu. Účastníkmi sú protagonisti a antagonisti, spolu s akýmikoľvek myšlienkami alebo hodnotami, ktoré predstavujú, akými sú dobro a zlo, individualizmus a kolektivizmus, láska a nenávisť, inteligencia a hlúposť, vedomosti a nevedomosť, sloboda a otroctvo, túžba a odpor a podobne.
+    \item \textbf{Kríza (Vyvrcholenie, Climax):} Kríza je bod zlomu, oddeľujúci medzi tým, čo bolo predtým, a tým, čo príde potom. Naplno sa v ňom prejaví konflikt a následné napätie. Ďalším spôsobom, ako myslieť na vyvrcholenie, je definovať ho ako bod v príbehu, v ktorom sa všetka ostatná akcia stáva nevyhnutnou.
+    \item \textbf{Peripetia (Dejový obrat):} Peripetiou rozumieme nečakaný dejový zvrat, nepredpokladanú zmenu situácie. Dej sa zrýchľuje a smeruje ku koncu.
+    \item \textbf{Katastrofa (Rozuzlenie):} Rozuzlenie je súbor akcií, ktorými sa príbeh končí. Hlavné akcie sú dokončené a posledná akcia podčiarkuje tón konečnosti.
+\end{itemize}
+\begin{figure}[hbt]
+	\centering
+	\includegraphics[width=0.8\textwidth]{obrazky-figures/climax.png}
+	\caption{Štruktúra deja. Prebrané z \cite{ClimaxImage}.}
+	\label{climax}
+\end{figure}
+
+
+
+\subsection*{Postavy}
+Postavy sú osoby prezentované v diele, ktoré čitateľ interpretuje ako osoby obdarené morálnymi a dispozičnými vlastnosťami, ktoré sú vyjadrené tým, čo hovoria a čo robia.
+Na základe dôležitosti možno postavu rozdeliť do dvoch kategórií: hlavná postava a vedľajšia postava. V celom príbehu sa zvyčajne objavuje hlavná postava, stáva sa stredobodom príbehu. Udalosti, ktoré sa v príbehu dejú, sa ho vždy priamo či nepriamo týkajú. Na druhej strane, u vedľajších postáv sú úlohy menej dôležité ako u hlavnej postavy, pretože nie sú plne rozvinutými postavami a ich úlohy v príbehu sú len na podporu vývoja hlavnej postavy.
+
+\subsection*{Prostredie}
+Prostredie diela sa vzťahuje na prírodnú a umelú scenériu, v ktorom postavy žijú a pohybujú sa. Znamená to, že všetko, čo súvisí s prostredím, ako napr. denné svetlo, stromy, zvieratá, spoločnosť, popisované zvuky, pachy a počasie sú súčasťou prostredia. Dejiskom diela je opis predmetov a fyzického vzhľadu miesta, kde sa príbeh odohráva.
+Popis prostredia pomáha pri vytváraní dôveryhodnosti; môže pomôcť vysvetliť postavy aj situáciu; môže prispieť k atmosfére alebo prevládajúcej nálade; môže byť aktívny v predpovedaní; môže byť symbolickým. Okrem symboliky hlavných postáv sa prostredie používa aj ako prostriedok na posilnenie témy, znamená to, že prostredie sa považuje za dôležitú úlohu v príbehu a analýze.
+
+
+\section{Kľúčové dejové línie}
+Pojem \textit{kľúčové dejové línie} nemožno exaktne definovať. V starovekom Grécku rozlišovali 
+2 druhy deja: komédiu a tragédiu, no odvtedy sa delenie dejových línií posunulo ďalej. V minulosti sa o nájdenie rozdelenia deja pokúšalo veľa významných dramatikov, či spisovateľov, medzi nimi aj Shiller \footnote{Friedrich Schiller- nemecký dramatik (1759-1805)
+} či Gozzi \footnote{Carlo Gozzi- talianksy dramatik (1720-1806)}. Na posledného menovaného nadväzuje kniha \uv{The Thirty Six Dramatic Situations} \cite{Polti:1921}, ktorá je jednou z mála kníh, ktorá sa zaoberá klasifikovaním deja. Ako z názvu vyplýva, predkladá 36 dramatických situácií, ktoré sú aj na dnešnú dobu aktuálne, no kniha udáva aj konkrétne deje pod každou dramatickou situáciou, tie sú však z väčšiny zastaralé a v dnešnej dobe nepoužiteľné.
+
+Ľudia odpradávna hľadajú idey pre vymýšľanie nových kníh, či filmov, preto možno hľadať kľučové dejové línie najmä v knihách, ktoré sa zaoberajú inšpirovaním o témach a dejových líniách, o ktorých by mohli ich čitateľa písať. 
+
+Jednou z takýchto kníh je \uv{Plotto} \cite{Cook:1928}, ktorá mala autorom pomôcť \textit{poskladať si} príbeh. Toto dielo prezentuje tisíce veľmi podrobných dejových línií, tzv. \textit{Masterplot}. Každá táto dejová línia pozostáva z 3 \textit{klauzúl}. Kde klauzula A reprezentuje druh protagonistu, klauzula B uvádza základnú myšlienku deja a klauzula C ukončuje dej. Keďže B klauzuly sú veľmi všeobecné, každá B klauzula pozostáva z desiatok podrobnejších dejov. Tieto podrobné deje, môžu na seba rôzne navzájom nadväzovať a vytvoriť tak celkom konkrétny podrobný dej. Celkovo počet dejov, ktorý sa týmto mechanizmom dokáže vytvoriť možno rátať v státisícoch.
+
+Ďalšou knihou z tejto kategórie je \uv{20 Master Plots: And How to Build Them} \cite{Tobias:1993} v ktorej autor prednáša, ako opäť z názvu vyplýva, 20 oblastí ktorých sa môže týkať dej. Sú nimi: Hľadanie, Dobrodružstvo, Prenasledovanie, Záchrana, Únik, Pomsta, Hádanka, Rivalita, Smoliar, Pokušenie, Metamorfóza, Transformácia, Dozrievanie, Láska, Zakázaná láska, Obetovanie, Objavenie, Úbohý prebytok, Vzostup a Zostup. 
+
+
+\section{Extrakcia dát}
+Dáta sú nevyhnutnou súčasťou každého výskumu, či už to je akademický, marketingový alebo vedecký. Ľudia chcú zbierať a analyzovať údaje z viacerých webových stránok. Rôzne webové stránky, ktoré patria do konkrétnej kategórie zobrazuje informácie v rôznych formátoch. Údaje môžu byť rozložené na viacerých stránkach a v rôznych sekciách. Väčšina webových stránok neumožňuje uložiť kópiu údajov, zobrazených na ich webových stránkach do vášho miestneho úložiska. \textit{Web Scraping} je technikou extrakcie neštruktúrovaných údajov z webových stránok a taktiež transformáciou týchto údajov do štruktúrovaných údajov, ktoré možno uložiť do zrozumiteľnej štruktúry ako napr. tabuľka, databáza alebo súbor vo formáte CSV. 
+
+Proces získavania údajov z internetu možno rozdeliť do dvoch po sebe nasledujúcich krokov; získavanie webových zdrojov a následné extrahovanie požadovaných informácií zo získaných údajov. Webové údaje sa bežne extrahujú pomocou protokolu HTTP (Hypertext Transfer Protocol) alebo cez web prehliadač. To sa buď vykonáva manuálne pomocou užívateľa alebo automaticky robotom alebo webovým prehliadačom. Konkrétne, program začína vytvorením HTTP požiadaviek na získanie zdrojov z cieľovej webovej stránky. Po úspešnom prijatí a spracovaní žiadosti cieľovou webovou stránkou sa požadovaný zdroj získa z webovej lokality a potom sa odošle späť do programu. Zdroj môže byť vo viacerých formátoch, ako sú webové stránky vytvorené z HTML, dátové kanály vo formáte XML alebo JSON alebo multimediálne dáta, ako sú obrázky, audio alebo video súbory. Po stiahnutí webových údajov proces extrakcie pokračuje v analýze, preformátovaní a usporiadaní údajov štruktúrovaným spôsobom. 
+
+Vzhľadom na to, že sa na internete neustále generuje obrovské množstvo heterogénnych údajov, je web scraping široko uznávaný ako efektívna a výkonná technika na zber veľkých dát. 
+
+Aj keď je web scraping účinnou technikou pri zhromažďovaní veľkých súborov údajov, je taktiež veľmi kontroverznou a môže vyvolať právne otázky súvisiace s autorskými právami a zmluvnými podmienkami. V rámci osobného použitia sa jedná o legálne využitie,  problém však nastáva v prípade komerčného využitia. Takisto, ak takýto program posiela žiadosti o získavanie údajov príliš často, je to funkčne ekvivalentné útoku odmietnutia služby (DoS útok), pri ktorom môže byť vlastníkovi odmietnutý vstup a môže byť zodpovedný za vzniknuté škody podľa, pretože vlastník webovej aplikácie má majetkovú účasť na fyzickom webovom serveri, ktorý je hostiteľom aplikácie.
+
+Táto podkapitola vychádza z publikácií \cite{Zhao:2017} a \cite{Sirisuriya:2015}.
+
+
+\section{Spracovanie prirodzeného jazyka}
+
+\subsection{Sequence classifiaction}
+
+\subsection{Mulit-label classifiaction}
+
+
+\section{Klasifikačné metódy}
+
+
+\section{Transformer}
+
+\subsection{Bert}
+
+\subsection{Fine-tuning}
+
+
+\section{Spracovanie dlhých reťazcov}
+
+
+\section{Metriky vyhodnocovania}
+
+
+\section{Doterajšie práce}
+
+
+\chapter{Návrh systému} 
+\label{navrh}
+
+\section{Motivácia}
+
+
+\section{Schéma systému}
+
+
+\section{Dáta}
+
+\subsection{Sťahovanie dát}
+
+\subsection{Získavanie dát}
+
+\subsection{Popis dát}
+
+
+\section{Analýza dát}
+
+
+\section{Zhrnutie návrhu}
+
+
+\chapter{Implementácia systému}
+\label{implementacia}
+
+\section{Architektúra projektu}
+
+
+\section{Sťahovanie/ výber dát}
+
+
+\section{Klasifikácia}
+
+
+\section{Možné vylepšenia}
+
+
+\chapter{Experimentálne vyhodnotenie a diskusia}
+\label{experimenty}
+
+
+\section{Dataset}
+
+
+\section{Maximálna presnosť}
+
+
+\section{Využitie}
+
+
+\section{Príklad}
+
+
+\chapter{Záver}
+\label{zaver}
+
+
+
+
+
+%===============================================================================
