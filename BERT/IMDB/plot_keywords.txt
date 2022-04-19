@@ -1,14 +1,5 @@
 Friendship
 Family Relationships
-Father Son Relationship
-Mother Son Relationship
-Husband Wife Relationship
-Father Daughter Relationship
-Mother Daughter Relationship
-Male Female Relationship
-Brother Sister Relationship
-Brother Brother Relationship
-Boyfriend Girlfriend Relationship
 Love
 Marriage
 Pregnancy
@@ -44,7 +35,6 @@ Competition
 Dream
 Lie 
 Vandalism
-Extremism
 Conspiracy
 Corruption
 Courage
@@ -58,7 +48,6 @@ Justice
 Prejudice
 Racism
 Abuse Of Power
-Political Scandal
 Power Struggle
 Time Travel
 Supernatural Power
@@ -79,7 +68,6 @@ Doppelganger
 Memory Loss
 Manipulation
 Near Death Experience
-Out Of Body Experience
 Mind Control
 Rise To Power
 Rise And Fall

@@ -12,7 +12,7 @@ from itertools import islice
 os.environ["WANDB_DISABLED"] = "true"
 nltk.download('stopwords')
 
-reloaded_split_dataset = load_from_disk("./processed_imdb")
+reloaded_split_dataset = load_from_disk("./processed_imdb_reduced")
 # reloaded_split_dataset = load_from_disk("./processed_booksumaries")
 
 labels = [label for label in reloaded_split_dataset['valid'].features.keys() if label not in ['summary', 'name']]
@@ -39,7 +39,7 @@ def remove_stopwords(text):
     no_stopword_text = [w for w in text.split() if not w in stop_words]
     return ' '.join(no_stopword_text)
 
-model = AutoModelForSequenceClassification.from_pretrained("./best_roberta_imdb")
+model = AutoModelForSequenceClassification.from_pretrained("./best_roberta_imdb_30_epochs_reduced")
 
 name = "Harry Potter and the Sorcerer's Stone"
 data = """

@@ -4,3 +4,4 @@ BERT/booksummaries/booksummaries.txt
 *.tsv
 *.csv
 Web_Scraping/Test/*
+Thesis/projekt.*

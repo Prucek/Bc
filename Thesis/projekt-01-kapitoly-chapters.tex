@@ -17,7 +17,9 @@ Práca je členená do šiestich kapitol. V kapitole \ref{teoria} je uvedený te
 \chapter{Rozbor riešenej problematiky }
 \label{teoria}
 
-\todo{Po dopisani teorie dopis toto}
+Táto kapitola obsahuje základné teoretické znalosti, z ktorých sa vychádza pri návrhu systému a následne pri jeho realizácii. Táto práca sa zaoberá vytvorením systému pre analýzu dejových línií zo zhrnutí dejov. Jednotlivé podkapitoly sa viažu k samotnému návrhu systému.
+Najskôr je popísané, čo je to dej, aké existujú kľúčové dejové línie a ako ich rôzny autori definujú. Následne je popísané ako sa získavajú dáta z webu. Potom je bližšie priblížený problém klasifikácie. Ďalej sú v rýchlosti uvedené základné klasifikačné metódy, hlbšie sú potom spomenuté neuronové siete a konkrétne Transformer a BERT. Záverečné podkapitoly sú venované metrikám vyhodnocovania a matrikám podobnosti.
+
 
 \section{Príbeh}
 Základom pre pochopenie kľúčových dejových línií a ich analýzu je pochopenie čo je to príbeh, z čoho sa skladá a ako to súvisí s dejom. Nasledujúce podkapitoly vychádzajú \linebreak
@@ -58,9 +60,9 @@ Popis prostredia pomáha pri vytváraní dôveryhodnosti; môže pomôcť vysvet
 
 
 \section{Kľúčové dejové línie}
+\label{kdl}
 Pojem \textit{kľúčové dejové línie} nemožno exaktne definovať. V starovekom Grécku rozlišovali 
-2 druhy deja: komédiu a tragédiu, no odvtedy sa delenie dejových línií posunulo ďalej. V minulosti sa o nájdenie rozdelenia deja pokúšalo veľa významných dramatikov, či spisovateľov, medzi nimi aj Shiller \footnote{Friedrich Schiller- nemecký dramatik (1759-1805)
-} či Gozzi \footnote{Carlo Gozzi- taliansky dramatik (1720-1806)}. Na posledného menovaného nadväzuje kniha \uv{The Thirty Six Dramatic Situations} \cite{Polti:1921}, ktorá je jednou z mála kníh, ktorá sa zaoberá klasifikovaním deja. Ako z názvu vyplýva, predkladá 36 dramatických situácií, ktoré sú aj na dnešnú dobu aktuálne, no kniha udáva aj konkrétne deje pod každou dramatickou situáciou, tie sú však z väčšiny zastaralé a v dnešnej dobe nepoužiteľné.
+2 druhy deja: komédiu a tragédiu, no odvtedy sa delenie dejových línií posunulo ďalej. V minulosti sa o nájdenie rozdelenia deja pokúšalo veľa významných dramatikov, či spisovateľov, medzi nimi aj Shiller \footnote{Friedrich Schiller- nemecký dramatik (1759-1805)} či Gozzi \footnote{Carlo Gozzi- taliansky dramatik (1720-1806)}. Na posledného menovaného nadväzuje kniha \uv{The Thirty Six Dramatic Situations} \cite{Polti:1921}, ktorá je jednou z mála kníh, ktorá sa zaoberá klasifikovaním deja. Ako z názvu vyplýva, predkladá 36 dramatických situácií, ktoré sú aj na dnešnú dobu aktuálne, no kniha udáva aj konkrétne deje pod každou dramatickou situáciou, tie sú však z väčšiny zastaralé a v dnešnej dobe nepoužiteľné.
 
 Ľudia odpradávna hľadajú idey pre vymýšľanie nových kníh, či filmov, preto možno hľadať kľučové dejové línie najmä v knihách, ktoré sa zaoberajú inšpirovaním o témach a dejových líniách, o ktorých by mohli ich čitateľa písať. 
 
@@ -70,6 +72,8 @@ Jednou z takýchto kníh je \uv{Plotto} \cite{Cook:1928}, ktorá mala autorom po
 
 
 \section{Extrakcia dát}
+\label{webscraping}
+
 Dáta sú nevyhnutnou súčasťou každého výskumu, či už to je akademický, marketingový alebo vedecký. Ľudia chcú zbierať a analyzovať údaje z viacerých webových stránok. Rôzne webové stránky, ktoré patria do konkrétnej kategórie zobrazuje informácie v rôznych formátoch. Údaje môžu byť rozložené na viacerých stránkach a v rôznych sekciách. Väčšina webových stránok neumožňuje uložiť kópiu údajov, zobrazených na ich webových stránkach do vášho miestneho úložiska. \textit{Web Scraping} je technikou extrakcie neštruktúrovaných údajov z webových stránok a taktiež transformáciou týchto údajov do štruktúrovaných údajov, ktoré možno uložiť do zrozumiteľnej štruktúry ako napr. tabuľka, databáza alebo súbor vo formáte CSV. 
 
 Proces získavania údajov z internetu možno rozdeliť do dvoch po sebe nasledujúcich krokov; získavanie webových zdrojov a následné extrahovanie požadovaných informácií zo získaných údajov. Webové údaje sa bežne extrahujú pomocou protokolu HTTP (Hypertext Transfer Protocol) alebo cez web prehliadač. To sa buď vykonáva manuálne pomocou užívateľa alebo automaticky robotom alebo webovým prehliadačom. Konkrétne, program začína vytvorením HTTP požiadaviek na získanie zdrojov z cieľovej webovej stránky. Po úspešnom prijatí a spracovaní žiadosti cieľovou webovou stránkou sa požadovaný zdroj získa z webovej lokality a potom sa odošle späť do programu. Zdroj môže byť vo viacerých formátoch, ako sú webové stránky vytvorené z HTML, dátové kanály vo formáte XML alebo JSON alebo multimediálne dáta, akými sú obrázky, audio alebo video súbory. Po stiahnutí webových údajov proces extrakcie pokračuje v analýze, preformátovaní a usporiadaní údajov štruktúrovaným spôsobom. 
@@ -101,6 +105,7 @@ Cieľom NLP, ako je uvedené vyššie, je dosiahnuť spracovanie ľudského jazy
 Zatiaľ čo NLP urobilo vážne zásahy do dosiahnutia cieľov 1 až 3, skutočnosť, že NLP systémy nedokážu samy o sebe vyvodzovať závery z textu, cieľom NLU stále zostáva NLP \cite{Liddy:2001} .
 
 \subsection{Klasifikácia}
+\label{klasifikacia}
 
 Námety pre túto kapitolu vychádzali z \cite{Herrera:2016}. Klasifikácia (classification) je jednou z najpopulárnejších tém Spracovania prirodzeného jazyka a Hĺbkovej analýzy dát (Data Mining). Je to zvyčajne prediktívna úloha vedená pomocou techník učenia pod dohľadom (supervised learning). Klasifikácia má za cieľ naučiť sa z \textit{označkovaných} vzorov model schopný predpovedať značky (labels) pre budúce, nikdy predtým nevidené, ukážky údajov.
 
@@ -128,38 +133,94 @@ Klasifikáciou textu sa myslí extrahovanie prvkov z nespracovaných textových 
 Naïve Bayes (NB) je najjednoduchší a najrozšírenejší model založený na použití Bayesovho teorému. Algoritmus NB primárne využíva podmienenú pravdepodobnosť. Výhodou NB je, že na odhad parametrov potrebných na klasifikáciu vyžaduje len malý počet tréningových dát. Parametre NB sú menej citlivé na chýbajúce údaje a algoritmus je jednoduchý. Predpokladá však, že vlastnosti sú na sebe nezávislé. Keď počet vlastnosti je veľký, alebo korelácia medzi vlastnosťami je významná, výkon NB klesá. Napriek "naivnému" dizajnu a zjednodušeným predpokladom je NB široko používaný aj v zložitých problémoch.
 
 \subsection*{K-najbližších susedov}
-Jadrom algoritmu k-najbližších susedov (angl. KNN - K-Nearest Neighbors) je klasifikácia neoznačenej vzorky nájdením kategórie s najväčším počtom vzoriek na \texit{k} najbližších vzorkách. Je to jednoduchý klasifikátor bez nutnosti vytvárania modelu a môže znížiť zložitosť pomocou jednoduchého procesu získavania KNN. Avšak v dôsledku pozitívnej korelácie medzi časovou/priestorovou zložitosťou modelu a množstvom údajov, je algoritmus KNN na rozsiahlych dátových sadách nezvyčajne pomalý. KNN závisí hlavne od okolitých susedných vzoriek a pre dátové sady s väčším prekrytím tried  je vhodnejší ako iné metódy.
+Jadrom algoritmu k-najbližších susedov (angl. KNN - K-Nearest Neighbors) je klasifikácia neoznačenej vzorky nájdením kategórie s najväčším počtom vzoriek na \textit{k} najbližších vzorkách. Je to jednoduchý klasifikátor bez nutnosti vytvárania modelu a môže znížiť zložitosť pomocou jednoduchého procesu získavania KNN. Avšak v dôsledku pozitívnej korelácie medzi časovou/priestorovou zložitosťou modelu a množstvom údajov, je algoritmus KNN na rozsiahlych dátových sadách nezvyčajne pomalý. KNN závisí hlavne od okolitých susedných vzoriek a pre dátové sady s väčším prekrytím tried  je vhodnejší ako iné metódy.
 
 \subsection*{Support Vector Machine}
 Prístupy založené na SVM menia klasifikáciu textu na viaceré úlohy binárnej klasifikácie. SVM sa snaží vytvárať optimálnu nadrovinu vo vektorovom priestore pre maximalizáciu vzdialenosti medzi triedami, a určiť vzdialenosť hranice kategórie v smere kolmom na nadrovinu čo najväčšiu, čo bude mať za následok nižšiu chybovosť klasifikácie. Využíva predchádzajúce znalosti na vytvorenie vhodnejšej štruktúry a rýchlejšie štúdium. SVM dokáže vyriešiť vysokorozmerné a nelineárne problémy. Má vysokú generalizačnú schopnosť, ale je citlivý na chýbajúce údaje.
 
 \subsection*{Rozhodovacie stromy}
-Rozhodovacie stromy (DT- Decision Trees) sú metódy učenia s učiteľom stromovej štruktúry a sú konštruovaný rekurzívne, odrážajú myšlienku \texit{rozdeľuj a panuj}. Rozhodovacie stromy môžu byť všeobecne rozdelené do dvoch odlišných etáp: stavba stromov a prerezávanie stromov. Začína sa na koreňovom uzly kde testuje vzorky údajov, a rozdeľuje dátovú sadu do rozdielnych podmnožín podľa rôznych výsledkov. Podmnožiny dátovej sady tvoria synovské uzly a každý listový uzol v rozhodovacom strome predstavuje kategóriu. Konštrukcia rozhodovacieho stromu má určiť koreláciu medzi triedami a atribútmi, ktoré sa ďalej využívajú na predpovedanie kategórie neznámych budúcich typov. DT je ľahké pochopiť a interpretovať. Z pozorovaneho modelu je ľahké odvodiť zodpovedajúci logický výraz z vygenerovaného rozhodovacieho stromu.
+Rozhodovacie stromy (DT- Decision Trees) sú metódy učenia s učiteľom stromovej štruktúry a sú konštruovaný rekurzívne, odrážajú myšlienku \textit{rozdeľuj a panuj}. Rozhodovacie stromy môžu byť všeobecne rozdelené do dvoch odlišných etáp: stavba stromov a prerezávanie stromov. Začína sa na koreňovom uzly kde testuje vzorky údajov, a rozdeľuje dátovú sadu do rozdielnych podmnožín podľa rôznych výsledkov. Podmnožiny dátovej sady tvoria synovské uzly a každý listový uzol v rozhodovacom strome predstavuje kategóriu. Konštrukcia rozhodovacieho stromu má určiť koreláciu medzi triedami a atribútmi, ktoré sa ďalej využívajú na predpovedanie kategórie neznámych budúcich typov. DT je ľahké pochopiť a interpretovať. Z pozorovaného modelu je ľahké odvodiť zodpovedajúci logický výraz z vygenerovaného rozhodovacieho stromu.
 
 \subsection*{Neurónové siete}
 Hlboké neurónové siete pozostávajú z umelých neurónových sietí, ktoré simulujú ľudský mozog, aby sa automaticky učil vysokoúrovňové vlastnosti z údajov, ktoré dosahujú lepšie výsledky ako tradičné modely spomenuté vyššie. Konvolučné neurnové siete (CNN - Convolutional Neural Networks ) môže súčasne aplikovať konvolúcie definované rôznymi jadrami na viaceré časti sekvencie. Preto sa CNN používajú na mnohé úlohy NLP vrátane klasifikácie textu. Pre klasifikáciu textu sa vyžaduje, aby bol text reprezentovaný ako vektor. Najskôr sú všetky vektory slov vstupného textu spojené do matice. Matica sa potom privádza do konvolučnej vrstvy, ktorá obsahuje niekoľko filtrov s rôznymi rozmermi. Nakoniec výsledok konvolučnej vrstvy prechádza cez rozhodovaciu vrstva a zreťazí všetky výsledky, aby sa získala konečná vektorová reprezentácia, ktorá určuje výslednú triedu. 
-Objavenie BERT, ktorý dokáže generovať kontextové slovné vektory, je významným bodom rozvoja klasifikácie textu a iných technológií NLP. Mnoho výskumníkov študovalo modely klasifikácie textu založené na BERT, ktorý dosahuje lepšie výsledky ako vyššie uvedené modely vo viacerých úlohách NLP vrátane klasifikácie textu.
 
-CNN extrahuje vlastnosti z textových vektorov prostredníctvom konvolučných jadier. Počet vlastnsoti zachytených konvolučným jadrom súvisí s jeho veľkosťou. CNN je hlboká dosť na to, že teoreticky dokáže zachytiť vlastnosti na veľké vzdialenosti. Z dôvodu nedostatočnej optimalizácie
-metódy pre parametre hlbokej siete a stratu informácií o polohe v dôsledku združovania
-vrstva, hlbšia vrstva neprináša výrazné zlepšenie.
-
-Transformer zaobchádza so vstupným textom ako s plne prepojeným grafom, je schopný paralelných výpočtov a je vysoko efektívny pri extrakcii vlastnosti medzi rôznymi slovami pomocou \texit{seba-pozornosti}. Mechanizmus pozornosti v Transformeri je však náročný na výpočty, najmä pri práci s dlhými sekvenciami. Celkovo je Transformer lepšou voľbou na klasifikáciu textu. 
 Hlboké učenie pozostáva z viacerých skrytých vrstiev v neurónovej sieti s vyššou úrovňou zložitosti a môže byť trénovaný na neštruktúrovaných dátach. Hlboké učenie sa dokáže naučiť jazykové vlastnosti a dokáže zvládať aj abstraktnejšie jazykové prvky založené na slovách a vektoroch na vysokej úrovni. Architektúra hlbokého učenia sa vie naučiť reprezentovať vlastnosti priamo zo vstupu bez príliš veľkého manuálneho zásahu a predchádzajúcich znalostí. Technológia hlbokého učenia je však metódou založenou na dátach, ktorá si vyžaduje obrovské množstvo údajov na dosiahnutie vysokého výkonu. 
-
-Predtrénované jazykové modely sa efektívne učia globálnu reprezentáciu sémantiky a výrazne posilňujú NLP úlohy, vrátane klasifikácie textov. Vo všeobecnosti používa metódy bez dozoru na automatické dolovanie sémantických znalostí a následné vytvorenie predtrénované ciele tak, aby sa stroje naučili chápať sémantiku
 
 \section{Transformer}
 
-\subsection{Bert}
+Transformer \cite{Vaswani:2017} je prominentný model hlbokého učenia, ktorý je široko používaný v rôznych oblastiach, ako napr. NLP, počítačové videnie alebo spracovanie reči.
+Transformer bol pôvodne navrhnutý ako \textit{Sequence-to-Sequence} model pre strojový preklad. Sequence-to-Sequence (alebo Seq2Seq) je neurónová sieť, ktorá transformuje danú sekvenciu prvkov, ako napríklad sekvenciu slov vo vete, na inú sekvenciu. Modely Seq2Seq pozostávajú z kodéra a dekodéra. Kóder vezme vstupnú sekvenciu a namapuje ju do priestoru vyššej dimenzie (n-rozmerný vektor). Tento abstraktný vektor sa privedie do dekodéra, ktorý ho zmení na výstupnú sekvenciu. Výstupná sekvencia môže byť v inom jazyku, symboloch, kópii vstupu atď.
 
-\subsection{Fine-tuning}
+\textit{Čistý} Transformer takiso teda pozostáva z kodéra a dekodéra, z ktorých každý z nich je zložený z \textit{n} rovnakých blokov, ktoré je možné na seba viackrát naskladať, čo je na obrázku \ref{transformer} popísané pomocou \textit{Nx}. Enkodér je vľavo a dekodér vpravo. Vidíme, že moduly pozostávajú hlavne z vrstiev \textit{Multi-Head Attention} a \textit{Feed Forward}.
 
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.8\textwidth]{obrazky-figures/Transformer.png}
+	\caption{Transformer- architektúra modelu \cite{Vaswani:2017}}
+	\label{transformer}
+\end{figure}
 
-\section{Spracovanie dlhých reťazcov}
+Pri Transformeroch sa stretávame s pojmom: \textit{Pozornosť}. Model si musí pamätať, ako sa sekvencie vkladajú do modelu, je nutné teda nejako dať každému slovu v sekvencii relatívnu polohu, pretože sekvencia závisí od poradia jej prvkov. Tieto pozície sa pridávajú do n-rozmerného vektora každého slova. V transformeroch sa toto nazýva \textit{mechanizmus pozornosti} (angl. Attention-mechanism). Mechanizmus pozornosti sa pozerá na vstupnú sekvenciu a v každom kroku rozhoduje, ktoré ďalšie časti sekvencie sú dôležité.
+
+Inými slovami, pre každý vstup, ktorý kodér načíta, mechanizmus pozornosti berie do úvahy niekoľko ďalších vstupov súčasne a rozhoduje, ktoré z nich sú dôležité, priradením rôznych váh týmto vstupom. Dekodér potom vezme ako vstup zakódovanú vetu a váhy poskytnuté mechanizmom pozornosti.
+
+Funkciu pozornosti možno opísať ako mapovanie dotazu (Q) a dvojice kľúč (K) – hodnota (V) na výstup, kde dotazy, kľúče, hodnoty a výstup sú všetko vektory. Výstup sa vypočíta ako vážený súčet hodnôt, kde váha priradená každej hodnote je vypočítaná funkciou kompatibility dotazu s príslušným kľúčom. Vstup pozostáva z dotazov a kľúčov dimenzie \(d_{k}\).
+Mechanizmus pozornosti možno popísať rovnicou \eqref{rovnicaTransformer}: 
+
+\begin{equation}
+	Attention(Q, K, V)=  softmax(\dfrac{QK^{T}}{\sqrt{d_{k}}})V \label{rovnicaTransformer}
+\end{equation}
+
+Q je matica, ktorá obsahuje dotaz (vektorová reprezentácia jedného slova v sekvencii), K sú všetky kľúče (vektorové reprezentácie všetkých slov v sekvencii) a V sú hodnoty, ktoré sú opäť vektorové reprezentácie všetkých slov v sekvencií.
+
+Váhy sú definované tým, ako je každé slovo v sekvencii (Q) ovplyvnené všetkými ostatnými slovami v sekvencii (K). Okrem toho je na váhy aplikovaná funkcia \textit{SoftMax}, aby mali rozdelenie medzi 0 a 1. Tieto váhy sa potom aplikujú na všetky slová v sekvencii (V).
+
+Architektúra transformerov používa komplexnejšiu \textit{Multi-Head attention} vrstvu, ktorá paralelizuje tento mechanizmus a umožňuje to systému učiť sa z rôznych reprezentácií Q, K a V. 
+
+Neskoršie práce ukazujú, že predtrénované modely založené na transformeroch môžu dosiahnuť \textit{state-of the-art performace} pri rôznych úlohách. V dôsledku toho sa Transformer stal \textit{go-to} architektúrou v NLP. \cite{Tianyang:2021} \cite{Allard:2019}
+
+\subsection{BERT}
+
+BERT \cite{Devlin:2018} (Bidirectional Encoder Representations from Transformers) je
+zástupca z rodiny transformerov. 
+
+Kľúčovou technickou inováciou BERT je aplikácia obojsmerného učenia Transformera. To je v kontraste s predchádzajúcimi snahami, ktoré sa zaoberali textovou sekvenciou buď zľava doprava, alebo kombinovaným učením zľava doprava a sprava doľava. Výsledky ukazujú, že jazykový model, ktorý je trénovaný obojsmerne, môže mať hlbší zmysel pre jazykový kontext a tok ako jednosmerné jazykové modely. V článku vedci podrobne opisujú novú techniky, ktoré umožňujú obojsmerný tréning v modeloch, v ktorých to bolo predtým nemožné.
+
+BERT využíva Transformer, mechanizmus pozornosti, ktorý sa učí kontextové vzťahy medzi slovami  v texte. Vo svojej základnej podobe obsahuje Transformer dva samostatné mechanizmy – kóder, ktorý číta textový vstup, a dekodér, ktorý vytvára predpoveď pre danú úlohu. Keďže cieľom BERT je vygenerovať jazykový model, je potrebný iba kóder. Na rozdiel od smerových modelov (directional models), ktoré čítajú textový vstup postupne (zľava doprava alebo sprava doľava), kodér Transformera načíta celú sekvenciu slov naraz. Preto sa považuje za obojsmerný, aj keď presnejšie by bolo povedať, že je nesmerný (non-directional). Táto charakteristika umožňuje modelu naučiť sa kontext slova na základe celého jeho okolia (vľavo a vpravo od slova).
+
+Pri trénovaní jazykových modelov existuje výzva, ako definovať cieľ predikcie. Mnoho modelov predpovedá ďalšie slovo v sekvencií, čo je smerový prístup (directional approach), ktorý vo svojej podstate obmedzuje kontextové učenie. Na prekonanie tejto výzvy používa BERT dve tréningové stratégie:
+\begin{itemize}
+    \item \textbf{Maskovaný jazykový model}  (Masked Language Model - MLM)  Nanešťastie, štandardné  jazykové modely môžu byť len trénované zľava doprava alebo sprava doľava, pretože obojsmerné by každému slovu umožnili nepriamo „vidieť samého seba“ a model by mohol triviálne predpovedať cieľové slovo vo viacvrstvovom kontexte. Preto sa jednoducho maskuje určité percento vstupných tokenov a potom sa tieto maskované tokeny predpovedajú. Tento postup sa označuje ako MLM, a BERT je trénovaný tak, že je náhodne maskovaných asi 15 \% všetkých tokenov. Hoci táto stratégia umožňuje získať obojsmerný pred-trénovaný model, nevýhodou je nesúlad medzi pred-tréningom (pre-training) a dolaďovaním (fine-tuning), pretože maskované tokeny sa počas dolaďovania nevyskytujú.
+    
+    \item \textbf{Predpoveď ďalšej vety} (Next Sentence Prediction - NSP) Mnohé dôležité nadväzujúce úlohy (downstream tasks) sú založené na pochopení vzťahu medzi dvoma vetami, ktorý nie je priamo zachytený jazykovým modelovaním. Aby bolo možné trénovanie modelu, ktorý rozumie väzbám viet, používa BERT binarizovanú NSP úlohu, ktorú možno triviálne vygenerovať z akéhokoľvek jednojazyčného korpusu. V tréningovom procese model BERT dostáva páry viet ako vstup a učí sa predpovedať, či druhá veta v páre je vetou nasledujúcou v pôvodnom dokumente. Počas tréningu tvorí 50 \% vstupov dvojica, kde je druhá veta vetou nasledujúcou v pôvodnom dokumente, zatiaľ čo v ostatných 50 \% je ako druhá veta zvolená náhodná veta z korpusu. Predpokladom je, že náhodná veta bude odpojená od prvej vety.
+\end{itemize}
+
+Pri trénovaní modelu BERT sa MLM a NSP trénujú spoločne s cieľom minimalizovať kombinovanú stratovú funkciu (loss function) týchto dvoch stratégií. \cite{Horev:2019} \cite{Sun:2019} 
+
+\subsubsection*{Fine-tuning}
+
+Použitie BERT na konkrétnu úlohu je pomerne jednoduché. BERT možno použiť na širokú škálu jazykových úloh, pričom do základného modelu stačí pridať iba malú vrstvu. Dolaďovanie (fine-tuning) je proces adaptovania BERT na konkrétnu nadväzujúcu úlohu (downstream task), či už je vstup jedno-textový alebo sa jedná o textové páry. Pre každú úlohu stačí zapojiť vstupy a výstupy špecifické pre danú úlohu do BERT a doladiť všetky parametre end-to-end. Na vstupe namiesto vety A a vety B z pred-tréningu je pri klasifikácií pár text-značky. V porovnaní s pred-tréningom je dolaďovanie relatívne lacné, čo sa týka času. 
+Pre vhodné doladenie BERT na konkrétnu úlohu je nutné okrem iného aj správne nastavenie hyperparamterov alebo pridanie extra vrstvy. Pre viac-značkovú klasifikáciu (multi-label) je nutné pridať vrstvu s aktivačnou funkciou sigmoid. Často sa používa softmax aktivačná funckia vo viac-triednych  úlohách (multi-class), čo je predvolená aktivačná funkcia tradičného BERT. Funkcia softmax však nie je vhodná pre úlohy s viacerými značkami, pretože súčet pravdepodobností výstupu funkcie softmax je 1. To sa nehodí v situáciách, keď sa môže byť prítomných viacero značiek súčasne.  Výstupy sigmoidnej funkcie sa pohybujú od 0 do 1, ktoré sú na sebe nezávislé a predstavujú pravdepodobnosť pre každú značku zvlášť. Súčet výstupov sigmoidnej funkcie nie je 1, takže viac ako jedna značka má možnosť získať skóre nad určitú hranicu prahu (threshold). Takto možno každú značku klasifikovať na 0 a 1 podľa hodnoty prahu.
+\cite{Devlin:2018} \cite{Sun:2019} \cite{Tang:2020}
+
+\subsubsection*{Spracovanie dlhých reťazcov}
+
+Ďalším faktorom pri dolaďovaní BERT na klasifikáciu textu je dĺžka vstupnej sekvencie a spracovanie dlhých reťazcov, keďže maximálna dĺžka vstupu BERT je 512 tokenov.Pripadajú do úvahy nasledujúce spôsoby zaoberajúce sa dlhými reťazcami.
+
+\textbf{Metódy skrátenia} Zvyčajne sú kľúčové informácie článku na začiatku a na konci. Preto možno použiť tri rôzne metódy skrátenia textu.
+\begin{enumerate}
+    \item Iba úvodných 510 tokenov \footnote{Treba odpočítať tokeny [CLS] a [SEP].}
+    \item Iba konečných 510 tokenov
+    \item 128 tokenov z úvodu a 382 tokenov z konca textu
+\end{enumerate}
+
+\textbf{Hierarchické metódy} Vstupný text je najskôr rozdelený na k = L/510 frakcií, ktoré sa privádzajú do BERT s cieľom získať zastúpenie k textových zlomkov. Potom sú použité metódy \textit{mean pooling}, \textit{max pooling} a seba-pozornosť na kombináciu reprezentácie všetkých zlomkov.\cite{Sun:2019}
+
+\textbf{Longformer} \cite{Beltagy:2020} Ďalšou možnosťou ako spracovávať dlhšie reťazce je použiť upravenú verziu BERT, s názvom Longformer, ktorý dokáže spracovávať vstup o veľkosti 4096 tokenov v relatívne krátkom čase.
 
 
 \section{Metriky vyhodnocovania}
+
 Táto podkapitola je prebraná z \cite{Herrera:2016}. Výstup akéhokoľvek klasifikátora s viacerými značkami pozostáva z predpovedaného vektora značiek pre každú testovaciu inštanciu. Pri práci v tradičnom scenári s iba jednou triedou ako výstupom,  predpoveď môže byť správna alebo nesprávna, naproti tomu predpovede viacerých značiek môžu byť úplne správne, čiastočne správne/nesprávne (v rôznych stupňoch) alebo úplne nesprávne.
 Použitie rovnakých metrík používaných v tradičnej klasifikácii je možné, ale zvyčajne prehnane prísne. To je dôvod na použitie špecifických hodnotiacich metrík, kde sa berú do úvahy aj prípady medzi týmito dvoma extrémami.
 V súčasnosti je v literatúre definovaných viac ako dvadsať rôznych výkonnostných metrík pre viac-značkovú klasifikáciu. Všetky metriky vyhodnocovania viacerých značiek možno zoskupiť podľa dvoch kritérií:
@@ -247,30 +308,149 @@ V prístupe makro-priemerovania \eqref{rovnica7} sa metrika vyhodnocuje raz za z
 \(FN\) = False Negative \newline
 \(L\) = všetky značky v dátovej sade  \newline
 
-\section{Doterajšie práce}
 
 
-\chapter{Návrh systému} 
+\section{Metriky podobnosti}
+
+Pre porovnanie dvoch vektorov a určenie ich podobnosti, existujú viaceré metriky. Tieto vektory môžu reprezentovať text, obraz a iné dáta a je možné teda takto určiť podobnosť medzi týmito dvoma vektormi. Metriky podobnosti fungujú na základe merania uhlu medzi týmito dvoma vektormi, aj keď sa jedná o viac-dimenzionálne vektory. 
+
+Jedny zo základných metrík sú Pearsonov korelačný koeficient, Spearmanov korelačný koeficient a kosínusová podobnosť, ktoré sú základom pre analýzu údajov.
+
+\begin{itemize}
+    \item \textbf{Kosínusová podobnosť} Kosínusová podobnosť je štandardná metrika používaná pri získavaní informácií. Je to kosínus uhla medzi dvoma euklidovskými vektormi, a preto nie je ovplyvnený skalárnymi transformáciami v údajoch. Je definovaný nižšie v rovnici \eqref{rovnicaCosinus} pre vektory \(x\) a \(y\).
+    
+    \item \textbf{Pearsonov korelačný koeficient} Pearsonove a Spearmanove koeficienty merajú silu asociácie medzi dvoma premennými \(X\) a \(Y\) . Pearsonov koeficient, bežne označovaný ako \(\rho\), je definovaný ako kovariancia dvoch premenných delená súčinom ich príslušných štandardných odchýlok. \eqref{rovnicaPearson}
+    
+    \item \textbf{Spearmanov korelačný koeficient} Spearmanov koeficient sa získa aplikáciou Pearsonovho koeficientu na dáta transformované podľa poradia. Oba nie sú ovplyvnené lineárnymi transformáciami údajov. Z vektorov \(x\) a \(y\), respektíve premenných \(X\) a \(Y\), každý s dĺžkou \(n\), sa Spearmanov koeficient \(r_{x,y}\) získa odhadom kovariancie populácie a štandardných odchýlok od vzoriek, ako je definované v rovnici \eqref{rovnicaSpearman}. \(\bar{x}\) a \(\bar{y}\) tu označujú priemer vzoriek. \cite{Dongen:2012}
+\end{itemize}
+
+\begin{equation}
+	\cos(\theta) =  \dfrac{\sum{x_{i}y_{i}}}{\sqrt{\sum{x_{i}^2}}\sqrt{\sum{y_{i}^2}}} \label{rovnicaCosinus}
+\end{equation}
+
+\begin{equation}
+	\rho_{X,Y} =  \dfrac{cov(X,Y)}{\sigma_{X} \sigma_{Y}} \label{rovnicaPearson}
+\end{equation}
+
+\begin{equation}
+	r_{x,y} =  \dfrac{\sum{(x_{i}-\bar{x})(y_{i}-\bar{y})}}{\sqrt{\sum{(x_{i}-\bar{x})^2}} \sqrt{\sum{(y_{i}-\bar{y})^2}}} \label{rovnicaSpearman}
+\end{equation}
+
+
+\chapter{Návrh systému}
 \label{navrh}
+
+\todo{popis pridat}
 
 \section{Motivácia}
 
-
-\section{Schéma systému}
-
+\todo{dopis na konci navrhu, nevies ako to koncipovat}
+Analýza dejových línií nie je oblasťou veľmi prebádanou, no existuje veľa prác a článkov, dokonca aj tutoriálov, o analýze žánrov. Práca je iná oproti ostatným aj tým, že miesto častejšie používanej viac-triednej klasifikácie sa používa klasifikácia viac-značková (viď. \ref{klasifikacia}). Je to kvôli tomu, že kľúčových dejov sa môže v zhrnutí deja nachádzať viac než len jeden.
 
 \section{Dáta}
+\todo{popis pridat}
 
-\subsection{Sťahovanie dát}
+\subsection{Dátová sada z IMDb}
+Veľmi dôležitou súčasťou klasifikácie dejov je zadefinovanie si, s akými kľúčovými dejovými líniami sa pracuje a vybrať teda konkrétne, ktoré sú to, určiť či ich je zopár, alebo stovky. Ako je napísané v kapitole \ref{kdl}, pohľady na toto sú rôzne. Rozhodol som sa rozšíriť prístup, ktorý bol zvolený v \cite{Tobias:1993}, kde je spomenutých 20 kľúčových dejových línií. Chcel som, aby konkrétne kľúčové dejové línie vypovedali niekedy aj trocha viac o príbehu ako jednoduché jednoslovné pomenovania v spomínanej knihe.
 
-\subsection{Získavanie dát}
+Možnosť označkovať si dáta ručne nepripadá do úvahy, lebo na učenie je potrebné kvantum dát, preto je nutné hľadať zdroje, ktoré ponúkajú takto označkované dáta. Možnosti nie je až tak veľa, no jednou vhodnou sú kľúčové slová z webu IMDb \footnote{https://www.imdb.com/}, kde ku najmä populárnym filmom a seriálom možno nájsť zhrnutia dejov a kľúčové slová. Jedinou nevýhodou je, že sa jedná o filmy a nie o knihy, no dej sa rovnako nachádza aj vo filme aj v knihe. Primárne sa práca zameriava na knihy no ako je aj v úvode a abstrakte spomenuté, môže sa jednať o akékoľvek zhrnutie deja. Tieto kľúčové slová hovoria o všetkých možných aspektoch, ktoré sa v danom diele nachádzajú. Pre konkrétne dielo môžu byť aj stovky kľúčových slov. Ak vo filme prší je kľúčovým slovom dážď, ak je vo filme dôležitý nejaký predmet alebo udalosť, tak je kľúčovým slovom práve to. Týkajú sa takisto aj témy, prostredia, žánru ale aj príbehu.
 
-\subsection{Popis dát}
+Tak som si teda vybral viac ako 100 kľúčových slov, týkajúcich sa deja spomedzi všetkých týchto kľúčových slov, a tie budú reprezentovať kľúčové dejové línie. Nachádzajú sa medzi nimi aj jednouché jednoslovné ako napr. \textit{love}, \textit{revenge}, \textit{escape}, \textit{racism} a pod., ale aj špecifickejšie ako \textit{time travel}, \textit{abuse of power}, \textit{one against many} alebo \textit{love triangle}. Takto spojené aj jednoduché aj zložitejšie môžu už dať dobrý obraz o tom, o čom príbeh je.
+
+Tieto dáta boli získané zo serverov výskumnej skupiny KNOT, ktorá IMDb stránky už mala stiahnuté vrámci iných projektov. V rámci tejto práce bola z týchto html súborov extrahovaná dátová sada obsahujúca názvy filmov/seriálov, zhrnutia deja a kľúčové dejové línie. Táto dátová sada obsahuje 172 789 záznamov.
+
+\subsection*{Vzorka dát}
+
+\begin{table}[hbt]
+\centering
+\caption{Vzorka dát z IMDb dátovej sady}
+\label{imdb}
+\begin{tabular}{|c|c|
+>{\centering\arraybackslash}m{7em}|
+>{\centering\arraybackslash}m{7em}|}
+\hline
+IMDb ID & Movie/Series title & Plot keywords & Plot summary \\
+\hline
+2140373 & Saving Mr. Banks & loss of father, family relationships, death, flashback &  A doting father, Walter Elias Disney (Tom Hanks)...\\ 
+\hline
+
+\end{tabular}
+\end{table}
+
+\subsection{Dátová sada Booksummaries}
+Okrem kľúčových dejových línií je nutné zozbierať aj knižné zhrnutia dejov. Jednou z voľne dostupných dátových sád je \textit{CMU Book Summary Dataset} \footnote{http://www.cs.cmu.edu/~dbamman/booksummaries.html}, ktorá obsahuje obsahuje zhrnutia dejov pre 16 559 kníh extrahovaných z Wikipédie spolu s metadátami z Freebase, vrátane autora knihy, názvu a žánrov.
+
+\subsection*{Vzorka dát}
+
+\begin{table}[hbt]
+\centering
+\caption{Vzorka dát z Booksummaries}
+\label{booksummaries}
+\begin{tabular}{|c|c|c|
+>{\centering\arraybackslash}m{7em}|
+>{\centering\arraybackslash}m{7em}|}
+\hline
+Wikipedia ID & Book title & Author & Book genres & Plot summary \\
+\hline
+620 & Animal Farm & George Orwell & Roman à clef, Satire, Children's literature, Speculative fiction, Fiction &  Old Major, the old boar on the Manor Farm, calls the animals on the farm for a meeting, where...\\ 
+\hline
+
+\end{tabular}
+\end{table}
+
+\subsection{Dátová sada z Goodreads}
+
+Jednou z najväčších sociálnych sietí o knihách je určite Goodreads \footnote{https://www.goodreads.com/}, kde si užívatelia môžu prezerať viac než 60 miliónov kníh, zistiť si o nich základné údaje, písať k ním recenzie a veľa ďalšieho. Okrem iného obsahuje každá knižná stránka krátky text opisujúci určitým spôsobom danú knihu. Niekedy sa jedná o citácie z knihy, niekedy o to čo iný povedali o tejto knihe, niekedy je to abstrakt a niekedy dokonca aj zhrnutie deja. Všetky tieto dáta boli pomocou web scrapingu \ref{webscraping} stiahnuté na servery výskumnej skupiny KNOT. Bol to proces veľmi zdĺhavý, keďže ako je spomenuté, knižných stránok je veľmi veľa. Sťahovanie trvalo asi mesiac. Cieľom bolo vytvoriť pravdepodobne najväčšiu dátovú sadu informácií o knihách a užívateľských recenzií o knihách vôbec. Všetky tieto dáta teda bolo nutné ďalej spracovať a odfiltrovať. Boli vybrané iba knihy, ktoré obsahujú viac ako 10 užívateľských recenzií, teda knihy aspoň trocha čítané, aby výsledná dátová sada bola prehľadnou a prínosnou, bez prebytočných dát. A z týchto knižných stránok boli extrahované iba dôležité informácie a boli tak vytvorené 2 dátové sady: o informáciach o knihe a o recenziách. Výsledné datasety obsahujú 23 748 648 recenzií a 922 935 informácií o knihe. 
+
+Nepýtal som si žiadne povolenie od stránky Goodreads na takéto sťahovanie a keďže oblasť extrakcie dát z webu je veľmi háklivou témou, tak tieto dátové sady samozrejme nebudú nikde zverejnené a sú určené len na študijné účely a výskumná skupina KNOT ich samozrejme môže ďalej využívať v ďalších projektoch.
+
+\subsection*{Vzorka dát}
+
+\begin{table}[hbt]
+\centering
+\caption{Vzorka dát z Goodreads datasetu informácií o knihe}
+\label{bookinfo}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Goodreads ID & Book title & Author & No. of Ratings & No. of Reviews  \\
+\hline
+18007564 & The Martian & Andy Weir & 931 685 & 77 600\\ 
+\hline
+\end{tabular}
+\begin{tabular}{|c|c|c|}
+\hline
+Avg. Rating & Year & Description \\
+\hline
+4.4  & 2011 & Six days ago, astronaut Mark Watney became... \\ 
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[hbt]
+\centering
+\caption{Vzorka dát z Goodreads datasetu recenzií}
+\label{reviewinfo}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Book ID & Book title & User ID  & Username & Rating  \\
+\hline
+18007564 & The Martian & 25375513 & Rick Riordan & 5/5\\ 
+\hline
+\end{tabular}
+\begin{tabular}{|c|c|c|}
+\hline
+Date & Has spoiler & Review \\
+\hline
+July 24, 2015  & False & Adult science thriller.  Love it, love it!...\\ 
+\hline
+\end{tabular}
+\end{table}
 
 
+
+\section{Spracovanie dát}
+\section{Schéma systému}
 \section{Analýza dát}
-
-
 \section{Zhrnutie návrhu}
 
 
