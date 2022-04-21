@@ -12,7 +12,7 @@ Táto práca sa zameriava na hľadanie týchto kľúčových dejových línií v
 
 Ciele tejto práce by sa dali využiť v sociálnych sieťach týkajúcich sa nielen kníh, kde by diela mohli byť klasifikované podľa týchto kľúčových dejových línií. Slúžili by pri vyhľadávaní, keď si užívateľ nevie spomenúť na názov knihy alebo by sa mohli takto hľadať podobnosti v dielach a navrhovať tak obdobné pri prezeraní konkrétnej knihy.
 
-Práca je členená do šiestich kapitol. V kapitole \ref{teoria} je uvedený teoretický pohľad, potrebný pre pochopenie problematiky. Zaoberá sa popisom deja, prehľadávaním webu, klasifikačnými metódami a následne uvedením doterajších a aj súčasných prístupov strojového učenia v spracovaní prirodzeného jazyka. Návrhom výsledného systému analýz sa venuje kapitola \ref{navrh}. Nasleduje kapitola \ref{implementacia}, v ktorej je popísaná implementácia tohoto systému. Kapitola \ref{experimenty} popisuje jednotlivé experimenty nad dátami. Záverečná \ref{zaver}. kapitola zhodnocuje ciele systému a dosiahnuté výsledky.
+Práca je členená do siedmych kapitol. V kapitole \ref{teoria} je uvedený teoretický pohľad, potrebný pre pochopenie problematiky. Zaoberá sa popisom deja, prehľadávaním webu, klasifikačnými metódami a následne uvedením doterajších a aj súčasných prístupov strojového učenia v spracovaní prirodzeného jazyka. Dôležitou časťou je popis dát, tomu je venovaná kapitola \ref{data}. Návrhom výsledného systému analýz sa venuje kapitola \ref{navrh}. Nasleduje kapitola \ref{implementacia}, v ktorej je popísaná implementácia tohoto systému. Kapitola \ref{experimenty} popisuje jednotlivé experimenty nad dátami. Záverečná \ref{zaver}. kapitola zhodnocuje ciele systému a dosiahnuté výsledky.
 
 \chapter{Rozbor riešenej problematiky }
 \label{teoria}
@@ -130,7 +130,7 @@ pre model. Tradičné modely zvyčajne potrebujú získať dobré vlastnosti (fe
 Klasifikáciou textu sa myslí extrahovanie prvkov z nespracovaných textových údajov a predpovedanie kategórie textových údajov na základe takýchto vlastnosti (features). Množstvo modelov bolo navrhnutých za posledných niekoľko desaťročí na klasifikáciu textu. Z tradičných modelov, Naïve Bayes (NB) bol prvým použitým modelom na túto úloha. Potom sa používajú generické klasifikačné modely, ako napríklad K-Nearest Neighbor (KNN), Support Vector Machine (SVM) a Random Forest (RF). V poslednej dobe eXtreme Gradient Boosting (XGBoost) a Light Gradient Boosting Machine (LightGBM) majú potenciál poskytnúť vynikajúci výkon. Modely hlbokého učenia takisto išli veľmi do popredia, odkedy bola použitá konvolučná neurónová sieť po prvý krát na klasifikáciu textu. Aj keď nie je špeciálne navrhnutý na prácu s textom, je Bidirectional Encoder Representation from Transformers (BERT) široko používaný pri návrhu modelov pre klasifikáciu textu, vzhľadom na jeho efektivitu vo viacerých dátových sadách zameraných na textovú klasifikáciu.
 
 \subsection*{Naïve Bayes}
-Naïve Bayes (NB) je najjednoduchší a najrozšírenejší model založený na použití Bayesovho teorému. Algoritmus NB primárne využíva podmienenú pravdepodobnosť. Výhodou NB je, že na odhad parametrov potrebných na klasifikáciu vyžaduje len malý počet tréningových dát. Parametre NB sú menej citlivé na chýbajúce údaje a algoritmus je jednoduchý. Predpokladá však, že vlastnosti sú na sebe nezávislé. Keď počet vlastnosti je veľký, alebo korelácia medzi vlastnosťami je významná, výkon NB klesá. Napriek "naivnému" dizajnu a zjednodušeným predpokladom je NB široko používaný aj v zložitých problémoch.
+Naïve Bayes (NB) je najjednoduchší a najrozšírenejší model založený na použití Bayesovho teorému. Algoritmus NB primárne využíva podmienenú pravdepodobnosť. Výhodou NB je, že na odhad parametrov potrebných na klasifikáciu vyžaduje len malý počet tréningových dát. Parametre NB sú menej citlivé na chýbajúce údaje a algoritmus je jednoduchý. Predpokladá však, že vlastnosti sú na sebe nezávislé. Keď počet vlastnosti je veľký, alebo korelácia medzi vlastnosťami je významná, výkon NB klesá. Napriek \uv{naivnému} dizajnu a zjednodušeným predpokladom je NB široko používaný aj v zložitých problémoch.
 
 \subsection*{K-najbližších susedov}
 Jadrom algoritmu k-najbližších susedov (angl. KNN - K-Nearest Neighbors) je klasifikácia neoznačenej vzorky nájdením kategórie s najväčším počtom vzoriek na \textit{k} najbližších vzorkách. Je to jednoduchý klasifikátor bez nutnosti vytvárania modelu a môže znížiť zložitosť pomocou jednoduchého procesu získavania KNN. Avšak v dôsledku pozitívnej korelácie medzi časovou/priestorovou zložitosťou modelu a množstvom údajov, je algoritmus KNN na rozsiahlych dátových sadách nezvyčajne pomalý. KNN závisí hlavne od okolitých susedných vzoriek a pre dátové sady s väčším prekrytím tried  je vhodnejší ako iné metódy.
@@ -197,13 +197,13 @@ Pri trénovaní jazykových modelov existuje výzva, ako definovať cieľ predik
 
 Pri trénovaní modelu BERT sa MLM a NSP trénujú spoločne s cieľom minimalizovať kombinovanú stratovú funkciu (loss function) týchto dvoch stratégií. \cite{Horev:2019} \cite{Sun:2019} 
 
-\subsubsection*{Fine-tuning}
+\subsubsection*{Fine-tuning} \label{finetuning}
 
 Použitie BERT na konkrétnu úlohu je pomerne jednoduché. BERT možno použiť na širokú škálu jazykových úloh, pričom do základného modelu stačí pridať iba malú vrstvu. Dolaďovanie (fine-tuning) je proces adaptovania BERT na konkrétnu nadväzujúcu úlohu (downstream task), či už je vstup jedno-textový alebo sa jedná o textové páry. Pre každú úlohu stačí zapojiť vstupy a výstupy špecifické pre danú úlohu do BERT a doladiť všetky parametre end-to-end. Na vstupe namiesto vety A a vety B z pred-tréningu je pri klasifikácií pár text-značky. V porovnaní s pred-tréningom je dolaďovanie relatívne lacné, čo sa týka času. 
 Pre vhodné doladenie BERT na konkrétnu úlohu je nutné okrem iného aj správne nastavenie hyperparamterov alebo pridanie extra vrstvy. Pre viac-značkovú klasifikáciu (multi-label) je nutné pridať vrstvu s aktivačnou funkciou sigmoid. Často sa používa softmax aktivačná funckia vo viac-triednych  úlohách (multi-class), čo je predvolená aktivačná funkcia tradičného BERT. Funkcia softmax však nie je vhodná pre úlohy s viacerými značkami, pretože súčet pravdepodobností výstupu funkcie softmax je 1. To sa nehodí v situáciách, keď sa môže byť prítomných viacero značiek súčasne.  Výstupy sigmoidnej funkcie sa pohybujú od 0 do 1, ktoré sú na sebe nezávislé a predstavujú pravdepodobnosť pre každú značku zvlášť. Súčet výstupov sigmoidnej funkcie nie je 1, takže viac ako jedna značka má možnosť získať skóre nad určitú hranicu prahu (threshold). Takto možno každú značku klasifikovať na 0 a 1 podľa hodnoty prahu.
 \cite{Devlin:2018} \cite{Sun:2019} \cite{Tang:2020}
 
-\subsubsection*{Spracovanie dlhých reťazcov}
+\subsubsection*{Spracovanie dlhých reťazcov} \label{dlhe}
 
 Ďalším faktorom pri dolaďovaní BERT na klasifikáciu textu je dĺžka vstupnej sekvencie a spracovanie dlhých reťazcov, keďže maximálna dĺžka vstupu BERT je 512 tokenov.Pripadajú do úvahy nasledujúce spôsoby zaoberajúce sa dlhými reťazcami.
 
@@ -219,7 +219,7 @@ Pre vhodné doladenie BERT na konkrétnu úlohu je nutné okrem iného aj správ
 \textbf{Longformer} \cite{Beltagy:2020} Ďalšou možnosťou ako spracovávať dlhšie reťazce je použiť upravenú verziu BERT, s názvom Longformer, ktorý dokáže spracovávať vstup o veľkosti 4096 tokenov v relatívne krátkom čase.
 
 
-\section{Metriky vyhodnocovania}
+\section{Metriky vyhodnocovania} \label{metriky}
 
 Táto podkapitola je prebraná z \cite{Herrera:2016}. Výstup akéhokoľvek klasifikátora s viacerými značkami pozostáva z predpovedaného vektora značiek pre každú testovaciu inštanciu. Pri práci v tradičnom scenári s iba jednou triedou ako výstupom,  predpoveď môže byť správna alebo nesprávna, naproti tomu predpovede viacerých značiek môžu byť úplne správne, čiastočne správne/nesprávne (v rôznych stupňoch) alebo úplne nesprávne.
 Použitie rovnakých metrík používaných v tradičnej klasifikácii je možné, ale zvyčajne prehnane prísne. To je dôvod na použitie špecifických hodnotiacich metrík, kde sa berú do úvahy aj prípady medzi týmito dvoma extrémami.
@@ -310,7 +310,7 @@ V prístupe makro-priemerovania \eqref{rovnica7} sa metrika vyhodnocuje raz za z
 
 
 
-\section{Metriky podobnosti}
+\section{Metriky podobnosti} \label{podobnost}
 
 Pre porovnanie dvoch vektorov a určenie ich podobnosti, existujú viaceré metriky. Tieto vektory môžu reprezentovať text, obraz a iné dáta a je možné teda takto určiť podobnosť medzi týmito dvoma vektormi. Metriky podobnosti fungujú na základe merania uhlu medzi týmito dvoma vektormi, aj keď sa jedná o viac-dimenzionálne vektory. 
 
@@ -337,27 +337,17 @@ Jedny zo základných metrík sú Pearsonov korelačný koeficient, Spearmanov k
 \end{equation}
 
 
-\chapter{Návrh systému}
-\label{navrh}
+\chapter{Dáta} \label{data}
+Dáta sú nevyhnutnou súčasťou každej dátovej analýzy a je rovnako dôležitá ich kvantita ako aj ich kvalita. V tejto kapitole sú popísané všetky dátové sady použité v tejto práci. V nasledujúcej sekcií je popísané získavanie a výber kľúčových dejových línií, tento dataset slúži ako hlavný trénovací dataset. Ďalej je popísaná populárna dátová sada z internetu obsahujúca zhrnutia kníh. Nakoniec sú predstavené dátové sady zo sociálnej siete Goodreads, ktoré boli vytvorené vrámci tejto práce.
 
-\todo{popis pridat}
-
-\section{Motivácia}
-
-\todo{dopis na konci navrhu, nevies ako to koncipovat}
-Analýza dejových línií nie je oblasťou veľmi prebádanou, no existuje veľa prác a článkov, dokonca aj tutoriálov, o analýze žánrov. Práca je iná oproti ostatným aj tým, že miesto častejšie používanej viac-triednej klasifikácie sa používa klasifikácia viac-značková (viď. \ref{klasifikacia}). Je to kvôli tomu, že kľúčových dejov sa môže v zhrnutí deja nachádzať viac než len jeden.
-
-\section{Dáta}
-\todo{popis pridat}
-
-\subsection{Dátová sada z IMDb}
+\section{Dátová sada z IMDb} \label{imdbdata}
 Veľmi dôležitou súčasťou klasifikácie dejov je zadefinovanie si, s akými kľúčovými dejovými líniami sa pracuje a vybrať teda konkrétne, ktoré sú to, určiť či ich je zopár, alebo stovky. Ako je napísané v kapitole \ref{kdl}, pohľady na toto sú rôzne. Rozhodol som sa rozšíriť prístup, ktorý bol zvolený v \cite{Tobias:1993}, kde je spomenutých 20 kľúčových dejových línií. Chcel som, aby konkrétne kľúčové dejové línie vypovedali niekedy aj trocha viac o príbehu ako jednoduché jednoslovné pomenovania v spomínanej knihe.
 
 Možnosť označkovať si dáta ručne nepripadá do úvahy, lebo na učenie je potrebné kvantum dát, preto je nutné hľadať zdroje, ktoré ponúkajú takto označkované dáta. Možnosti nie je až tak veľa, no jednou vhodnou sú kľúčové slová z webu IMDb \footnote{https://www.imdb.com/}, kde ku najmä populárnym filmom a seriálom možno nájsť zhrnutia dejov a kľúčové slová. Jedinou nevýhodou je, že sa jedná o filmy a nie o knihy, no dej sa rovnako nachádza aj vo filme aj v knihe. Primárne sa práca zameriava na knihy no ako je aj v úvode a abstrakte spomenuté, môže sa jednať o akékoľvek zhrnutie deja. Tieto kľúčové slová hovoria o všetkých možných aspektoch, ktoré sa v danom diele nachádzajú. Pre konkrétne dielo môžu byť aj stovky kľúčových slov. Ak vo filme prší je kľúčovým slovom dážď, ak je vo filme dôležitý nejaký predmet alebo udalosť, tak je kľúčovým slovom práve to. Týkajú sa takisto aj témy, prostredia, žánru ale aj príbehu.
 
-Tak som si teda vybral viac ako 100 kľúčových slov, týkajúcich sa deja spomedzi všetkých týchto kľúčových slov, a tie budú reprezentovať kľúčové dejové línie. Nachádzajú sa medzi nimi aj jednouché jednoslovné ako napr. \textit{love}, \textit{revenge}, \textit{escape}, \textit{racism} a pod., ale aj špecifickejšie ako \textit{time travel}, \textit{abuse of power}, \textit{one against many} alebo \textit{love triangle}. Takto spojené aj jednoduché aj zložitejšie môžu už dať dobrý obraz o tom, o čom príbeh je.
+Tak som si teda vybral viac ako 100 kľúčových slov, týkajúcich sa deja spomedzi všetkých týchto kľúčových slov, a tie budú reprezentovať kľúčové dejové línie. Nachádzajú sa medzi nimi aj jednouché jednoslovné ako napr. \textit{love}, \textit{revenge}, \textit{escape}, \textit{racism} a pod., ale aj špecifickejšie ako \textit{time travel}, \textit{abuse of power}, \textit{one against many} alebo \textit{love triangle}. Takto spojené aj jednoduché aj zložitejšie môžu už dať dobrý obraz o tom, o čom príbeh je. Celý po experimentoch upravený zoznam je možné si prezrieť v prílohe \ref{priloha-kdl}. 
 
-Tieto dáta boli získané zo serverov výskumnej skupiny KNOT, ktorá IMDb stránky už mala stiahnuté vrámci iných projektov. V rámci tejto práce bola z týchto html súborov extrahovaná dátová sada obsahujúca názvy filmov/seriálov, zhrnutia deja a kľúčové dejové línie. Táto dátová sada obsahuje 172 789 záznamov.
+Tieto dáta boli získané zo serverov výskumnej skupiny KNOT, ktorá IMDb stránky už mala stiahnuté vrámci iných projektov. V rámci tejto práce bola z týchto html súborov extrahovaná dátová sada obsahujúca názvy filmov/seriálov, zhrnutia deja a kľúčové dejové línie. Táto dátová sada obsahuje 172 789 záznamov. Vzorku týchto dát sa nachádza v tabuľke \ref{imdb}.
 
 \subsection*{Vzorka dát}
 
@@ -377,8 +367,8 @@ IMDb ID & Movie/Series title & Plot keywords & Plot summary \\
 \end{tabular}
 \end{table}
 
-\subsection{Dátová sada Booksummaries}
-Okrem kľúčových dejových línií je nutné zozbierať aj knižné zhrnutia dejov. Jednou z voľne dostupných dátových sád je \textit{CMU Book Summary Dataset} \footnote{http://www.cs.cmu.edu/~dbamman/booksummaries.html}, ktorá obsahuje obsahuje zhrnutia dejov pre 16 559 kníh extrahovaných z Wikipédie spolu s metadátami z Freebase, vrátane autora knihy, názvu a žánrov.
+\section{Dátová sada Booksummaries}
+Okrem kľúčových dejových línií je nutné zozbierať aj knižné zhrnutia dejov. Jednou z voľne dostupných dátových sád je \textit{CMU Book Summary Dataset} \footnote{http://www.cs.cmu.edu/~dbamman/booksummaries.html}, ktorá obsahuje obsahuje zhrnutia dejov pre 16 559 kníh extrahovaných z Wikipédie spolu s metadátami z Freebase, vrátane autora knihy, názvu a žánrov. Ukážku týchto dát si možno pozrieť v tabuľke \ref{booksummaries}.
 
 \subsection*{Vzorka dát}
 
@@ -398,9 +388,10 @@ Wikipedia ID & Book title & Author & Book genres & Plot summary \\
 \end{tabular}
 \end{table}
 
-\subsection{Dátová sada z Goodreads}
+\section{Dátová sada z Goodreads}
 
-Jednou z najväčších sociálnych sietí o knihách je určite Goodreads \footnote{https://www.goodreads.com/}, kde si užívatelia môžu prezerať viac než 60 miliónov kníh, zistiť si o nich základné údaje, písať k ním recenzie a veľa ďalšieho. Okrem iného obsahuje každá knižná stránka krátky text opisujúci určitým spôsobom danú knihu. Niekedy sa jedná o citácie z knihy, niekedy o to čo iný povedali o tejto knihe, niekedy je to abstrakt a niekedy dokonca aj zhrnutie deja. Všetky tieto dáta boli pomocou web scrapingu \ref{webscraping} stiahnuté na servery výskumnej skupiny KNOT. Bol to proces veľmi zdĺhavý, keďže ako je spomenuté, knižných stránok je veľmi veľa. Sťahovanie trvalo asi mesiac. Cieľom bolo vytvoriť pravdepodobne najväčšiu dátovú sadu informácií o knihách a užívateľských recenzií o knihách vôbec. Všetky tieto dáta teda bolo nutné ďalej spracovať a odfiltrovať. Boli vybrané iba knihy, ktoré obsahujú viac ako 10 užívateľských recenzií, teda knihy aspoň trocha čítané, aby výsledná dátová sada bola prehľadnou a prínosnou, bez prebytočných dát. A z týchto knižných stránok boli extrahované iba dôležité informácie a boli tak vytvorené 2 dátové sady: o informáciach o knihe a o recenziách. Výsledné datasety obsahujú 23 748 648 recenzií a 922 935 informácií o knihe. 
+Jednou z najväčších sociálnych sietí o knihách je určite Goodreads \footnote{https://www.goodreads.com/}, kde si užívatelia môžu prezerať viac než 60 miliónov kníh, zistiť si o nich základné údaje, písať k ním recenzie a veľa ďalšieho. Okrem iného obsahuje každá knižná stránka zopár užívateľských recenzií k danej knihe a krátky text opisujúci určitým spôsobom danú knihu. Niekedy sa jedná o citácie z knihy, niekedy o to čo iný povedali o tejto knihe, niekedy je to abstrakt a niekedy dokonca aj zhrnutie deja. Všetky tieto dáta boli pomocou web scrapingu \ref{webscraping} stiahnuté na servery výskumnej skupiny KNOT. Bol to proces veľmi zdĺhavý, keďže ako je spomenuté, knižných stránok je veľmi veľa. Sťahovanie trvalo vyše mesiaca. Cieľom bolo vytvoriť pravdepodobne najväčšiu dátovú sadu informácií o knihách a užívateľských recenzií o knihách vôbec. Všetky tieto dáta teda bolo nutné ďalej spracovať a odfiltrovať. Boli vybrané iba knihy, ktoré obsahujú viac ako 10 užívateľských recenzií, teda knihy aspoň trocha čítané, aby výsledná dátová sada bola prehľadnou a prínosnou, bez prebytočných dát. A z týchto knižných stránok boli extrahované iba dôležité informácie a boli tak vytvorené 2 dátové sady: o informáciach o knihe a o recenziách. Výsledné datasety obsahujú 23 748 648 recenzií a 922 935 informácií o knihe. V tabuľkách 
+\ref{bookinfo} a \ref{reviewinfo} sa nachádzajú príklady z týchto dátových sád.
 
 Nepýtal som si žiadne povolenie od stránky Goodreads na takéto sťahovanie a keďže oblasť extrakcie dát z webu je veľmi háklivou témou, tak tieto dátové sady samozrejme nebudú nikde zverejnené a sú určené len na študijné účely a výskumná skupina KNOT ich samozrejme môže ďalej využívať v ďalších projektoch.
 
@@ -447,49 +438,99 @@ July 24, 2015  & False & Adult science thriller.  Love it, love it!...\\
 \end{table}
 
 
+\chapter{Návrh systému}
+\label{navrh}
 
-\section{Spracovanie dát}
-\section{Schéma systému}
+Táto kapitola sa venuje návrhu riešenia systému pre analýzu dejových línií. Pre návrh podobného systému sú alfou a omegou dáta. Je ním zvlášť venovaná kapitola a sú v nej popísané všetky dátové sady, s ktorými sa v práci pracuje. Ďalej je popísaný proces analýzy dát, kde je priblížené ako sa dá klasifikátor naučiť predikovať kľúčové dejové línie a ako tieto výsledky vyhodnocovať a interpetovať. Nakoniec sú zhrnuté ciele tejto práce a bližšie popísané čo sa chce touto prácou dokázať. 
+
+\section{Motivácia}
+
+Analýza dejových línií nie je oblasťou veľmi prebádanou, no existuje veľa prác a článkov, dokonca aj tutoriálov, o analýze žánrov. Ako je naznačené aj v úvode, v kľúčových dejových líniách je množstvo skrytého potenciálu, ktorý sa táto práca snaží priblížiť. Sú zaujímavou alternatívou k žánrom a vedia niekedy vypovedať viac o deji ako žánre. Pomocou nich by sa mohol v sociálnych sieťach definovať nový spôsob delenia obsahu. 
+
+Oproti ostatným prácam je táto inou aj tým, že miesto častejšie používanej viac-triednej klasifikácie sa používa klasifikácia viac-značková (viď. \ref{klasifikacia}). Je to kvôli tomu, že kľúčových dejov sa môže v zhrnutí deja nachádzať viac než len jeden, čo opäť pridáva väčšiu hodnotu pri ich klasifikácií.
+
+Práca sa zameriava na menej bežné, no nemenej dôležité a zaujímavé dejové línie a snaží sa analyzovať zhrnutia dejov a užívateľských recenzií v anglickom jazyku a následne predpovedať k nim kľúčové dejové línie. Ďalej je systém schopný porovnať dva deje na základe týchto kľúčových dejových línií a určiť tak či sú si diela, čo sa deja týka, podobné.
+
+Bola aj snaha zozbierať čo najväčšie množstvo dát o knihách a k nim užívateľských recenzií, keďže takéto dátové sady sú väčšinou malé, alebo neposkytujú dostatok informácií. Preto bola vytvorená pravdepodobne najväčšia dátová sada informácií o knihách a k nim užívateľských recenzií v anglickom jazyku.
+
 \section{Analýza dát}
+
+Zo spracovanými dátami a vytvorenými dátovými sadami, je už možné tieto dáta ďalej analyzovať a prejsť k úlohe klasifikácie. Najlepšie výsledky dosahujú metódy založené na strojovom učení, a najmä tie založené na neurónových sieťach, preto je asi najvhodnejšie vybrať BERT \cite{Devlin:2018}, prípadne nejakú jeho variantu, keďže dominuje v rebríčkoch\footnote{http://nlpprogress.com/} viacerých úloh spracovania prirodzeného jazyka. Je nutné stiahnuť nejakú variantu BERTa a adaptovať ho na dáta, s ktorými bude pracovať. Bude sa teda jednať o \textit{fine-tunig} \ref{finetuning}, ktorému sa v tomto kontexte bude hovoriť tréning, učenie či ladenie. Pred samotným tréningom je nutné sa uistiť aby mal BERT v poslednej vrstve aktivačnú funkciu sigmoid, a nie softmax, pretože sa bude jednať o viac-značkovú klasifikáciu, a bez tohoto by na výstupe boli úplne iné hodnoty. Predtým, než sa model začne učiť je treba správne nastaviť parametre učenia, napr. rýchlosť učenia, hodnotiaca funkcia, po koľkých krokoch sa má model znova vyhodnotiť a pod. Budú sa takisto musieť využiť nejaké spôsoby pre spracovanie dlhých reťazcov \ref{dlhe}, lebo veľa zhrnutí dejov je dlhších ako 512 tokenov. Je vhodné vyskúšať viaceré metódy a zitiť, ktorá bude fungovať najlepšie. Takisto je potrebné rozdeliť dataset do 3 častí: train, test a valid. Každá z týchto 3 podmnožín je určitou percentuálnou časťou pôvodného datasetu a je nutné určiť aby toto rozdelenie bolo čo najlepšie. Ďalej, by mali všetky tieto podmnožiny mať zhruba rovnaké zastúpenie všetkých prípadov. V rámci tejto práce to znamená, aby čo možno všetky značky boli zastúpené v každej podmnožine, preto je vhodné aby dáta boli do týchto podmnožín náhodne rozdelené. Trénovacia sada býva zo všetkých najväčšia z týchto dát sa bude model učiť a snažiť sa nájsť správne nastavenia vnútorných stavov tak, aby sa čo najviac priblížil pôvodným výsledkom. Testovacia sada slúži na výpočet vyhodnocovacej metriky. Po každej fáze učenia, po určitom počte krokov, nasleduje fáza vyhodnotenia, teda kde model predpovedá ako by určil kľúčové dejové línie a porovnajú sa so skutočnými údajmi, spôsob porovnania závisí od vyhodnocovacích metrík \ref{metriky}, kde je vhodné vybrať správne tieto metriky, aby daná metrika nebola príliš prísna. Po tejto fáze model dostane spätnú väzbu a môže pokračovať v učení lepším spôsobom. Validačná sada slúži na to isté čo testovacia, akurát na to, že sa táto sada nepoužíva počas tréningu, ale až na finálnu validáciu modelu, a sú to teda dáta, ktoré model \uv{nikdy nevidel} a nie je žiadno ovplyvnená vyhodnocovacia metrika. 
+
+Po tomto môže byť započatý proces učenia. Je zvykom nechať modelom prejsť trénovaciu sadu viac-krát, zvlášť keď je počet dát veľký. Jedno takéto \uv{prejdenie} sa nazýva epocha. IMDb dátová sada patrí medzi tie väčšie, preto bude nutné pustiť učenie na desiatky možno až stovky epoch, aby boli výsledky kvalitné. Treba podotknúť, že modely typu BERT sú pamäťovo veľmi náročné a spolu z veľkou dátovou sadou je výpočet veľmi náročný nie len na pamäť grafickej karty ale aj čo sa týka času. Preto je nutné trénovať takúto úlohu na výkonných grafických kartách, no napriek tomu môže výpočet trvať aj niekoľko dní. V praxi sa miesto klasických GPU používajú tzv. TPU\footnote{TPU- tensor processing unit}, ktoré sú určené presne na trénovanie neurónových sietí a úlohy podobného typu. 
+
+Pre naučenie klasifikátora odhadovať kľúčové dejové línie sa použije dátová sada z IMDb, kde vstupom budú zhrnutia dejov a výstupom budú pravdepodobnosti každej značky, ktoré budú znamenať na koľko si model myslí, že sa v zhrnutí nachádza daná kľúčová dejová línia. Zvolí sa prah, od ktorého sa budú kľúčové dejové línie klasifikovať na tie, ktoré sa v diele nachádzajú a na tie ktoré nie. Predpokladané výsledky sa porovnajú s reálnymi a BERT sa bude snažiť nachádzať súvislosti medzi kľúčovými dejovými líniami a slovami v zhrnutí. Nepredpokladá sa, že výsledky vyhodnocovacích metrík budú vysoké, lebo všeobecne viac-značková klasifikácia z veľa značkami nemá vynikajúce výsledky, takisto nemusia byť dáta dobre označkované a rovnako aj skracovanie textov bude znižovať hodnoty metrík. Je ale dôležitejšie ako bude model fungovať nad dátami, ktoré nie sú označkované a či dokáže aj v takých dátach nájsť kľúčové dejové línie a ako budú odrážať skutočnosť. Pre toto je vhodné vybrať si knihy (zhrnutia), ktoré poznáme, alebo sú nám známe a nechať model nech nad nimi predpovedá kľúčové dejové línie a výsledky ohodnotiť podľa vlastných predpokladov a očakávaní. Toto je vlastne cieľom tejto práce, či dokáže klasifikátor odhadnúť aké deje sa v príbehu nachádzajú a na koľko sú relevantné. Na toto budú využité zvyšné dátové sady.
+
+Takýto klasifikátor možno takisto použiť na porovnávanie dvoch dejov a pomocou metrík podobnosti \ref{podobnost} sa porovnajú získané predpovede dvoch dejov a na základe tohoto porovnania sa zistí, či dané pravdepodobnostné vektory sú si podobné a teda či sú podobné aj deje. Úspešnosť a presnosť tohoto porovnania však do veľkej miery závisí od toho ako dobre sa budú predpovedať kľúčové dejové línie.
+
+\section{Schéma systému}
+
+Na obrázku \ref{schema} je zobrazené navrhovaná schéma výsledného systému. Šípky v tomto diagrame reprezentujú tok dát a obdĺžniky predstavujú konkrétne moduly.
+
+Z webu je potrebné stiahnuť potrebné dátové sady, či už pomocou web scrapingu, alebo už priamo pripravené sady. Tieto dáta treba spracovať (HTML parsing) a odfiltrovať a vytvoriť z nich dátové sady, ktoré môžu byť použité na trénovanie neurónovej siete. Z internetu bude prevzatý aj pretrénovaný model BERT, ktorý sa doladí z vytvorených dátových sád. Výsledkom bude funkčný klasifikátor dejových línií. Bude však mať svoje chyby a proces trénovania sa bude opakovať viac-krát, s tým že sa budú upravovať dátové sady a parametre učenia, aby sa docielilo čo najlepších výsledkov. Z klasifikátora bude vychádzať aj porovnávač dejových línií.
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.8\textwidth]{obrazky-figures/diagram.png}
+	\caption{Navrhovaná schéma výsledného systému.}
+	\label{schema}
+\end{figure}
+
 \section{Zhrnutie návrhu}
 
+Hlavným cieľom práce je vytvoriť systém schopný zo zhrnutí dejov určiť o aké kľúčové deje sa v ňom jedná. Bude sa jednať o viac-značkovú klasifikáciu, teda viac ako jeden dej sa môže vyskytnúť v jednom zhrnutí. Klasifikátorom kľúčových dejových línií bude predtrénovaný model typu BERT, ktorý bude adaptovaný na túto úlohu. Kvalitu modelu budú určovať metriky vyhodnotenia \ref{metriky}, no takisto vlastný názor.
+
+Jedným z vedľajších cieľov je vytvoriť porovnávač dvoch dejových línií, ktorý bude z klasifikátora vychádzať. Tento porovnávač najskôr zistí pravdepodobnosti každej z kľúčových dejových línií v zhrnutí  v obidvoch dielach a potom tieto vektory porovná pomocou podobnostných metrík \ref{podobnost} a určí podobnosť týchto diel.
+
+V neposlednom rade je cieľom zozbierať viacero zdrojov knižných dát a vytvoriť systém schopný extrahovať informácie o knihách a užívateľských recenzií z obľúbenej sociálnej siete zameranej na knihy- Goodreads.
 
 \chapter{Implementácia systému}
 \label{implementacia}
+V tejto kapitole bude priblížená implementácia systému popísaného v kapitole \ref{navrh} založená na dátach z kapitoly \ref{data}. Najskôr bude popísané z akých modulov sa riešenie skladá a z akých knižníc je riešenie vytvorené. Následne je popísané jednotlivé moduly projektu. Je v nich objasnené čo všetko muselo byť naprogramované, konkrétne využité parametre a metriky vybrané po viacerých experimentoch. Možné námety na vylepšenia sú popísané v záverečnej podkapitole.  
 
 \section{Architektúra projektu}
 
 
-\section{Sťahovanie/ výber dát}
+\section{Dáta}
+
+popisat proces stahovania, parsovania, vytvorenie datasetu
 
 
 \section{Klasifikácia}
+poipsat trenovanie
+popisat nacitanie modelu 
+presne vyhodnocvacie metriky
+presne prahy
 
+priklady v experimentoch
+
+\section{Podobnosť}
+popisat ako skript funguje
+presne metriky
+presne prah
+
+priklady v experimentoch
 
 \section{Možné vylepšenia}
-
+gui, porovnavanie zo vsetkymi datami
 
 \chapter{Experimentálne vyhodnotenie a diskusia}
 \label{experimenty}
 
 
-\section{Dataset}
-
-
-\section{Maximálna presnosť}
-
+\section{Dataset} ?
 
 \section{Využitie}
 
 
-\section{Príklad}
+\section{Príklady}
 
+\section{Maximálna presnosť}
+
+\section{Možné vylepšenia}
 
 \chapter{Záver}
 \label{zaver}
-
-
-
 
 
 %===============================================================================
