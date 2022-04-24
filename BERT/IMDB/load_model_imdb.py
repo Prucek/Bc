@@ -10,24 +10,12 @@ from sklearn import metrics
 # No interruptions
 os.environ["WANDB_DISABLED"] = "true"
 
-reloaded_split_dataset = load_from_disk("./processed_imdb")
+reloaded_split_dataset = load_from_disk("./processed_imdb_reduced")
 # reloaded_split_dataset = load_from_disk("./processed_booksumaries")
 
 labels = [label for label in reloaded_split_dataset['valid'].features.keys() if label not in ['summary', 'name']]
 id2label = {idx:label for idx, label in enumerate(labels)}
 label2id = {label:idx for idx, label in enumerate(labels)}
-
-# for i in range(1, len(reloaded_split_dataset['test'])):
-#     # print("test ",[id2label[idx] for idx, label in enumerate(reloaded_split_dataset['test'][i]) if label == True])
-#     # print("train ",[id2label[idx] for idx, label in enumerate(reloaded_split_dataset['train'][i]) if label == True])
-#     arr = []
-#     for label in labels:
-#         if reloaded_split_dataset['test'][str(label)][-i] == True: 
-#             arr.append(label)
-#     if arr == []:
-#         print(i)
-#     print(arr)
-
 
 model_name = "roberta-base"
 max_length = 512
@@ -57,8 +45,8 @@ encoded_dataset.set_format("torch")
 
 device = torch.device('cuda')
 
-model = AutoModelForSequenceClassification.from_pretrained("./best_roberta_imdb")
-# model = AutoModelForSequenceClassification.from_pretrained("./my_test")
+# model = AutoModelForSequenceClassification.from_pretrained("./best_roberta_imdb")
+model = AutoModelForSequenceClassification.from_pretrained("./best_roberta_imdb_30_epochs_reduced")
 
 
 fin_targets=[]
@@ -77,9 +65,10 @@ with torch.no_grad():
         probs = sigmoid(logits.squeeze())
         # print(probs)
         predictions = np.zeros(probs.shape)
-        predictions[np.where(probs >= 0.5)] = 1
+        predictions[np.where(probs >= 0.3)] = 1
         # print([id2label[idx] for idx, label in enumerate(predictions) if label == 1])
         fin_outputs.append(predictions)
+        probs = probs.numpy()
         fin_probs.append(probs)
         # count = count + 1
         # if count == limit:
@@ -100,47 +89,24 @@ with torch.no_grad():
             fin_outputs[i][j] = int(fin_outputs[i][j])
 
 
-    accuracy = metrics.accuracy_score(fin_targets, fin_outputs)
     f1_score_micro = metrics.f1_score(fin_targets, fin_outputs, average='micro', zero_division=True)
     f1_score_macro = metrics.f1_score(fin_targets, fin_outputs, average='macro', zero_division=True)
     f1_score_samples = metrics.f1_score(fin_targets, fin_outputs, average='samples', zero_division=True)
-    f1_score_weighted = metrics.f1_score(fin_targets, fin_outputs, average='weighted', zero_division=True)
-    zero_one_loss = metrics.zero_one_loss(fin_targets, fin_outputs)
-    coverage_error = metrics.coverage_error(fin_targets, fin_outputs)
-    average_precision_score_micro = metrics.average_precision_score(fin_targets, fin_outputs, average='micro')
-    average_precision_score_macro = metrics.average_precision_score(fin_targets, fin_outputs, average='macro')
-    average_precision_score_samples = metrics.average_precision_score(fin_targets, fin_outputs, average='samples')
-    average_precision_score_weighted = metrics.average_precision_score(fin_targets, fin_outputs, average='weighted')
-    roc_auc_score_micro = metrics.roc_auc_score(fin_targets, fin_outputs, average='micro')
-    roc_auc_score_macro = metrics.roc_auc_score(fin_targets, fin_outputs, average='macro')
-    roc_auc_score_samples = metrics.roc_auc_score(fin_targets, fin_outputs, average='samples')
-    roc_auc_score_weighted = metrics.roc_auc_score(fin_targets, fin_outputs, average='weighted')
 
-    print(f"Accuracy Score = {accuracy}")
+    average_precision_score_micro = metrics.average_precision_score(fin_targets, fin_probs, average='micro')
+    average_precision_score_macro = metrics.average_precision_score(fin_targets, fin_probs, average='macro')
+    average_precision_score_samples = metrics.average_precision_score(fin_targets, fin_probs, average='samples')
+
     print(f"F1 Score (Micro) = {f1_score_micro}")
     print(f"F1 Score (Macro) = {f1_score_macro}")
     print(f"F1 Score (Samples) = {f1_score_samples}")
-    print(f"F1 Score (Weighted) = {f1_score_weighted}")
-    print(f"One error = {zero_one_loss}")
-    print(f"Coverage error = {coverage_error}")
     print(f"average_precision_score_micro = {average_precision_score_micro}")
     print(f"average_precision_score_macro= {average_precision_score_macro}")
     print(f"average_precision_score_samples = {average_precision_score_samples}")
-    print(f"average_precision_score_weighted= {average_precision_score_weighted}")
-    print(f"roc_auc_score_micro = {roc_auc_score_micro}")
-    print(f"roc_auc_score_macro= {roc_auc_score_macro}")
-    print(f"roc_auc_score_samples = {roc_auc_score_samples}")
-    print(f"roc_auc_score_weighted= {roc_auc_score_weighted}")
     print("=======================")
 
     y_pred = np.array(fin_outputs)
     y_true = np.array(fin_targets)
-
-    MR = np.all(y_pred == y_true, axis=1).mean()
-    print("MR: ", MR)
-
-    Loss = np.any(y_true != y_pred, axis=1).mean()
-    print("Loss: ", Loss)
 
     def Accuracy(y_true, y_pred):
         temp = 0
@@ -150,23 +116,6 @@ with torch.no_grad():
     
     print("Accuracy: ", Accuracy(y_true, y_pred))
 
-    def Hamming_Loss(y_true, y_pred):
-        temp=0
-        for i in range(y_true.shape[0]):
-            temp += np.size(y_true[i] == y_pred[i]) - np.count_nonzero(y_true[i] == y_pred[i])
-        return temp/(y_true.shape[0] * y_true.shape[1])
-    
-    print("Hamming_Loss: ", Hamming_Loss(y_true, y_pred))
-
-    # def F1Measure(y_true, y_pred):
-    #     temp = 0
-    #     for i in range(y_true.shape[0]):
-    #         if (sum(y_true[i]) == 0) and (sum(y_pred[i]) == 0):
-    #             continue
-    #         temp+= (2*sum(np.logical_and(y_true[i], y_pred[i])))/ (sum(y_true[i])+sum(y_pred[i]))
-    #     return temp/ y_true.shape[0]
-    
-    # print("F1(sapmples): ", F1Measure(y_true, y_pred))
 from itertools import islice
 
 for i in range(0,10):
@@ -191,4 +140,3 @@ for i in range(0,10):
     # print("Predicted: ", predicted_labels)
     # print("Correct: ", correct_labels)
 
-# print(multilabel_confusion_matrix(y_true, y_pred, samplewise=True))

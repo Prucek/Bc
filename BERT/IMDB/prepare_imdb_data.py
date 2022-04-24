@@ -143,6 +143,25 @@ if __name__ == '__main__':
     dataset.drop(dataset[dataset['summary'] == None].index, inplace=True)
     dataset.drop(dataset[dataset['summary'].isna()].index, inplace=True)
 
+    # counts = []
+    # for i in range(len(plot_keywords)):
+    #     counts.append(0)
+
+    # for genre_idxs in global_movies['keywords']:
+    #     tmp = [plot_keywords.index(x) for x in genre_idxs]
+    #     for idx in tmp:
+    #         counts[idx] = counts[idx] + 1
+
+    # genre_count = {}
+    # for idx, genre in enumerate(plot_keywords):
+    #     genre_count[str(genre)] = counts[idx]
+
+    # genre_count = {k: v for k, v in sorted(genre_count.items(), key=lambda item: item[1], reverse=True)}
+
+    # for i in genre_count:
+    #         print(i,genre_count[str(i)])
+    
+    # exit()
 
     for i,genres in enumerate(global_movies['keywords']):
         for genre in genres:
@@ -166,4 +185,4 @@ if __name__ == '__main__':
         'valid': test_valid['train']})
 
 
-    train_test_valid_dataset.save_to_disk("./processed_imdb")
+    train_test_valid_dataset.save_to_disk("./processed_imdb_reduced")

@@ -156,7 +156,7 @@ Transformer bol pôvodne navrhnutý ako \textit{Sequence-to-Sequence} model pre 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.8\textwidth]{obrazky-figures/Transformer.png}
-	\caption{Transformer -- architektúra modelu \cite{Vaswani:2017}}
+	\caption{Transformer -- architektúra modelu \cite{Vaswani:2017}.}
 	\label{transformer}
 \end{figure}
 
@@ -353,7 +353,7 @@ Tieto dáta boli získané zo serverov výskumnej skupiny KNOT, ktorá IMDb str�
 
 \begin{table}[hbt]
 \centering
-\caption{Vzorka dát z IMDb dátovej sady}
+\caption{Vzorka dát z IMDb dátovej sady.}
 \label{imdb}
 \begin{tabular}{|c|c|
 >{\centering\arraybackslash}m{7em}|
@@ -374,7 +374,7 @@ Okrem kľúčových dejových línií je nutné zozbierať aj knižné zhrnutia 
 
 \begin{table}[hbt]
 \centering
-\caption{Vzorka dát z Booksummaries}
+\caption{Vzorka dát z Booksummaries.}
 \label{booksummaries}
 \begin{tabular}{|c|c|c|
 >{\centering\arraybackslash}m{7em}|
@@ -399,7 +399,7 @@ Nepýtal som si žiadne povolenie od stránky Goodreads na takéto sťahovanie a
 
 \begin{table}[hbt]
 \centering
-\caption{Vzorka dát z Goodreads datasetu informácií o knihe}
+\caption{Vzorka dát z Goodreads datasetu informácií o knihe.}
 \label{bookinfo}
 \begin{tabular}{|c|c|c|c|c|}
 \hline
@@ -419,7 +419,7 @@ Avg. Rating & Year & Description \\
 
 \begin{table}[hbt]
 \centering
-\caption{Vzorka dát z Goodreads datasetu recenzií}
+\caption{Vzorka dát z Goodreads datasetu recenzií.}
 \label{reviewinfo}
 \begin{tabular}{|c|c|c|c|c|}
 \hline
@@ -486,7 +486,7 @@ V neposlednom rade je cieľom zozbierať viacero zdrojov knižných dát a vytvo
 
 \chapter{Implementácia systému}
 \label{implementacia}
-V tejto kapitole bude priblížená implementácia systému popísaného v kapitole \ref{navrh} založená na dátach z kapitoly \ref{data}. Najskôr bude popísané z akých modulov sa riešenie skladá a z akých knižníc je riešenie vytvorené. Následne sú popísané jednotlivé moduly projektu. Je v nich objasnené čo všetko muselo byť naprogramované, konkrétne využité parametre a metriky vybrané po viacerých experimentoch. Možné námety na vylepšenia sú popísané v záverečnej podkapitole.  
+V tejto kapitole bude priblížená implementácia systému popísaného v kapitole \ref{navrh} založená na dátach z kapitoly \ref{data}. Najskôr bude popísané z akých modulov sa riešenie skladá a z akých knižníc je riešenie vytvorené. Následne sú popísané jednotlivé moduly projektu. Je v nich objasnené čo všetko muselo byť naprogramované, konkrétne využité parametre a metriky vybrané po viacerých experimentoch. Možné námety na vylepšenia sú popísané v záverečnej podkapitole. V tejto kapitole je len popísané, ako systém funguje a ako bol implementovaný, no konkrétne príklady a experimenty budú popísané v nasledujúcej kapitole \ref{experimenty}.
 
 \section{Architektúra projektu}
 
@@ -518,46 +518,99 @@ Keďže dáta z Goodreads sú dvojakého druhu, boli vytvorené aj dva skripty p
 Čo sa týka spracovania súborov typu HTML z IMDb, bol použitý rovnaký mechanizmus ako pri Goodreads dátach, pričom {\tt extract\_keywords\_imdb} je modulom, ktorý sa o to stará. Ako je možné si všimnúť v tabuľke \ref{imdb}, ktorá opäť ukazuje názornú ukážku z vytvorenej dátovej sady, nachádza sa tu len málo položiek dát. Je to kvôli tomu, že táto dátová sada slúži len na trénovanie a netreba k nej dodatočné informácie. Tieto dáta bolo nutné ešte odfiltrovať, pretože najskôr bol takto spracovaný dataset so všetkými kľúčovými slovami a so všetkými filmami/seriálmi. Filtrácia spočívala v tom, že najskôr boli vybraté kľúčové dejové línie (viď. príloha \ref{priloha-kdl}) a pokiaľ sa medzi kľúčovými slovami nachádzala aspoň jedna kľúčová dejová línia, tak bol záznam ponechaný a všetky kľúčové slová, mimo kľúčových dejových línií boli vymazané, inak bol vymazaný celý záznam.   
 
 \subsection*{Spracovanie dátovej sady}
-{\tt prepare\_imdb\_data}
+
+Predtým ako sú dáta predstavené neurónovej sieti je nutné ich pripraviť na formát, ktorým sa dokáže sieť učiť. Takisto je to aj v tomto prípade. Keďže je využitá knižnica \textit{Transformers}, tak bola využitá aj knižnica \textit{Datasets}, ktoré spolu dobre komunikujú, keďže sú vytvorené jednou spoločnosťou. Modul zabezpečujúci túto prípravu je {\tt prepare\_imdb\_data}. 
+
+Jedná sa hlavne o prípravu kľúčových dejových línií do správneho formátu. Keďže neurónová sieť sa na díva ako na čísla, treba ich takto aj reprezentovať. Pre viac-značkovú klasifikáciu v tejto práci to znamená, že namiesto položky kľúčové dejové línie, ktorá obsahuje slovný zoznam kľúčových dejových línií platných pre dané zhrnutie, budú všetky kľúčové dejové línie (nie len tie, ktoré sú platné pre dané zhrnutie) mať vlastný záznam obsahujúci informáciu o tom, či je v danom zhrnutí platná (0,1). 
+
+Okrem tohoto je upravené aj zhrnutie. Existujú totiž siete, ktoré rozlišujú malé a veľké písmena a tie ktoré nie. Pri zhrnutí deja nehrá veľkú úlohu veľkosť počiatočných písmen, preto bol použitý model, ktorý nerozlišuje veľké a malé písmená, preto boli všetky zhrnutia prevedené do malých písmen. Okrem toho, je nutné vyriešiť problém toho, že väčšina zhrnutí je dlhších ako 512 tokenov, teda je nutné nejako skrátiť toto zhrnutie. Najskôr bolo použité odstránenie tzv. \textit{stopwords}, ktoré reprezentujú slova, ktoré nemajú emocionálny význam a  nemajú teda čo dočinenia s dejom a sú viac-menej zbytočné, jedná sa o slová ako napr. \textit{of}, \textit{it}, \textit{the}, \textit{a}. Nemusí to byť najlepšou voľbou, ale aj takéto nepatrné zmeny môžu pomôcť skrátiť zhrnutie. Nepomôže to však všetkým zhrnutiam, preto je nutné ešte nejako skrátiť tieto zhrnutia. Boli vyskúšané viaceré metódy, no najlepšou a zároveň jednou z jednoduchších sa javí odseknutie iba posledných 510 tokenov \ref{dlhe}. Je to kvôli tomu, že rozuzlenie zápletky a teda určenie typu deja sa deje na konci zhrnutia. Rovnako sú odstránené interpunkcie. Tieto zhrnutia sú neskôr takisto prevedené na čísla, na identifikátory tokenov, pomocou tzv.\textit{tokenizer}. Ako spomenuté aj v návrhu, je nutné túto dátovú sadu rozdeliť na train, test a valid. Konkrétne sa použilo rozloženie 80:10:10, ktoré je často používané vo viacerých úlohách strojového učenia.
+
+Výsledné dáta ktorými je model \uv{kŕmený} možno vidieť v tabuľke \ref{spracovane}.
+
+\begin{table}[hbt]
+\centering
+\caption{Vzorka dát z IMDb dátovej sady spracovaná na trénovanie.}
+\label{spracovane}
+\begin{tabular}{|c|c|c|c|c|
+>{\centering\arraybackslash}m{7em}|}
+\hline
+Movie/Series title & loss of father & moral dilemma & ... & death  & Plot summary \\
+\hline
+Saving Mr. Banks & 1 & 0  & ... & 1 &  doting father walter elias disney tom hanks...\\ 
+\hline
+
+\end{tabular}
+\end{table}
 
 
 \section{Klasifikácia}
 
+V tejto podkapitole je popísaný konkrétny pred-trénovaný model použitý na trénovanie, ako prebiehal proces tréningu, parametre tréningu, konkrétne použité metriky a ako sa pracovalo s výsledným modelom. 
+
 \subsection*{Stiahnutý model}
+
+Z webu HuggingFace je možné si vybrať z veľkého množstva voľne dostupných pred-trénovaných modelov využiteľných na rôzne úlohy. Pre jednoduchosť bol zvolený {\tt roberta-base}. Jedná sa o menší model založený na princípoch BERT, ako z názvu vyplýva -- RoBERTa \cite{Liu:2019}, značí \textit{A Robustly Optimized BERT Pretraining Approach}, teda robustne optimalizovaný prístup pred-trénovania BERT. Dosahuje takisto trochu lepšie výsledky ako klasický BERT. Bola použitá \uv{menšia} varianta, lebo už aj táto varianta je dostatočne pamäťovo náročná a prínos väčšieho modelu nie je markantný.
+
 \subsection*{Trénovanie/adaptácia}
-\subsection*{Vyhodnocovacie metriky}
+
+Na trénovanie slúži modul {\tt trainer\_imdb}, ktorý používa \textit{Trainer API} z knižnice \textit{Transformers}. Pre proces trénovania je nutné nastaviť parametre trénovania: spôsob ako sa trénovanie bude vyhodnocovať a dátové sady na tréning a priebežne vyhodnocovanie. Toto všetko je v \textit{Trainer API} zabezpečené veľmi priamočiaro, aj vďaka spolupráci s \textit{Datasets}. Všetky parametre tréningu je možné si pozrieť v \todo{kóde}, no z tých dôležitejších treba uviezť aspoň následovné. Po 2000 krokoch vždy nasleduje vyhodnocovanie, miera učenia (angl. learning rate) bola po viacerých experimentoch zvolená na 3e-5, veľkosť dávok (batch size) bola 4, aj preto ,že väčšia už nemohla byť kvôli pamäti na grafickej karte. Táto nízka veľkosť dávky bola ale vyvážená gradientovými akumulačnými krokmi (angl. gradient accumulation steps). Počet epoch vo finálnej verzií je 30, čo aj tak trvalo niekoľko dní na natrénovanie. Vyhodnocovacie metrikou, ktoré určovali úspešnosť modelu boli viaceré. Konkrétne klasické f1 skóre, jeho makro a mikro varianta, presnosť (Accuracy) a varianty priemernej presnosti. Hlavnou, ktorá určovala zlepšenie bolo klasické f1 skóre. Dátovou sadou pre trénovanie je spomínaná dátová sada train a pre priebežne vyhodnotenie to je dátová sada test. Dátová sada valid je použitá po tréningu na celkový výpočet úspešnosti. 
+
+Trénovanie bežalo na grafickej karte NVidia RTX3090 TURBO na jednom zo strojoch skupiny KNOT. Karta má 24 GB veľkosť operačnej pamäte, no aj tak to v niektorých prípadoch experimentov bolo málo. 
+
+Počas tréningu sa modely priebežne ukladajú, aby mohli byť ľahko načítané a použité.
+
 \subsection*{Načítanie modelu}
-\subsection*{Podobnosť}
 
-poipsat trenovanie
-popisat nacitanie modelu 
-presne vyhodnocvacie metriky
-presne prahy
+Najlepší model je načítaný z pamäte a s ním sú potom vykonávané experimenty a vyhodnotenia. Model sa načítava pre jednu z troch vecí: výpočet vyhodnocovacích metrík, určenie kľúčových dejových línií, porovnanie dvoch dejov. Modul {\tt load\_model\_imdb} je zodpovedný za výpočet vyhodnocovacích metrík. Modelom sa nechá prejsť dátová sada valid a všetky predpovede modelu sa ukladajú a nakoniec sa porovnajú s očakávanými výsledkami, vypočítajú sa a vypíšu sa výsledky. Metriky, ktoré sa používajú sú: f1-skóre, mikro f1-skóre, makro f1-skóre, presnosť (Accuracy), priemerná presnosť (Average precision), mikro priemerná presnosť a makro priemerná presnosť. Iné metriky sú dosť prísne, preto boli použité práve tieto. Výsledky modelu sa dajú priebežne získavať počas trénovania, teda určitá predstava o výsledkoch je už počas adaptácie. Avšak prácou s dátami, ktoré model nikdy nevidel je získané objektívnejšie zhodnotenie modelu. Toto načítanie trvá aj niekoľko minú, keďže model musí všetky položky z valid dátovej sady vyhodnotiť, to zaberá najviac času, potom už výpočet metrík je časovo nenáročný. 
 
-priklady v experimentoch
+Ďalej sa model načítava pre určenie kľúčových dejových línií ľubovoľného zhrnutia. Vstupom je ľubovoľné zhrnutie, ktoré je opäť pomocou \textit{tokenizer} prevedené do jazyka, ktorému model rozumie a rovnako musí byť zhrnutie upravené a skrátené tak ako pri spracovaní dátovej sady. Výstupom nie je nič iné ako predpovedané kľúčové dejové línie. Takisto sú k výstupom vypísané jednotlivé pravdepodobnosti kľúčových dejových línií, teda na koľko si bol model istý, že sa jedná o danú kľúčovú dejovú líniu. Toto zabezpečuje modul {\tt predict\_plot}.
 
+Pre porovnanie dvoch dejov slúži modul {\tt compare\_plots}, ktorý robí to isté ako modul popísaný v predošlom odstavci, akurát to robí pre dve zhrnutia. Vypočítané pravdepodobností oboch zhrnutí pre všetky kľúčové dejové línie sú porovnané pomocou metrík podobnosti \ref{podobnost}. Všetky tri metriky, teda Spearmanov korelačný koeficient, Pearsonov korelačný koeficient a Kosínusová podobnosť sú spolu spriemerované a výsledok určuje percento podobnosti týchto dvoch dejov.
 
-popisat ako skript funguje
-presne metriky
-presne prah
-
-\section{Možné vylepšenia}
-gui, porovnavanie zo vsetkymi datami
 
 \chapter{Experimentálne vyhodnotenie a diskusia}
 \label{experimenty}
 
 
-\section{Dataset} ?
-
-\section{Využitie}
-
-
-\section{Príklady}
+\section{Dataset}
+kriticke zhoodnotenie ci je prinosom a je vyuzitelna
 
 \section{Maximálna presnosť}
 
+\begin{table}[hbt]
+\centering
+\caption{Výsledná úspešnosť klasifikátora určujúci kľúčové dejové línie.}
+\label{vysledky}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+\(Acc.\) & \(F1\) & \(F1_{Micro}\) & \(F1_{Macro}\) & \(Avg. Pre.\) & \(Avg. Pre._{Micro}\) &  \(Avg. Pre._{Macro}\) \\
+\hline
+23.3 & 30.7 & 36.9 & 27.1 & 45.4 & 33.8 & 24.5 \\ 
+\hline
+
+\end{tabular}
+\end{table}
+
+\section{Využitie}
+zvasty
+
+
+\section{Príklady}
+imdb podareny 96h/a time to kill nepodareny, porovnanie podarene/nepodarene (s nemom, cindirela, dve rozdielne uplne)
+booksumaries podarene, nepodarene, porovnanie podarene/nepodarene (nieco co poznas zhruba)
+goodreads zhrnutie podarene, nepodarene
+goodreads recenzia podarene, nepodarene? (kde je nejaky dej aspon)
+= 12 ?? neni to moc, ak iba strucny popis tak nie
+screenshoty ? tabulky ? 
+
+
 \section{Možné vylepšenia}
++ gui, porovnavanie zo vsetkymi datami
+viac kdl, lepsich....
+lepsie data -hlavne, doraz, zalezi na zhrnuti, aj oznackovani, aj o infomacii v zhrnuti, tazko
+dlhsi trening
+lepsie hyperpara
+
 
 \chapter{Záver}
 \label{zaver}

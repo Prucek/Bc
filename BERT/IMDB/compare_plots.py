@@ -43,16 +43,16 @@ model = AutoModelForSequenceClassification.from_pretrained("./best_roberta_imdb_
 
 name1 = "-"
 data1 = """
-Sixty dark years after the victorious but utterly devastating war against an unforeseen alien invasion which left humanity practically on the verge of extinction, most of the remaining earthlings have long since they relocated on Titan, Saturn's largest moon, in 2077. Left behind in the uninhabitable and barren Earth along with a handful of survivors and the extraterrestrial invaders, is the drone technician, Jack Harper, and the communications teammate, Victoria Olsen, who monitor the planet before mankind's final migration to Titan. However, when the plagued with unexplained visions, Jack, rescues the cryptic woman in his dreams, flashbacks of a fragmented memory will soon unearth a startling secret about his mission. In the end, what is the real threat, and above all, who cloaks the truth?
+After his son is captured in the Great Barrier Reef and taken to Sydney, a timid clownfish sets out on a journey to bring him home.
+
+A clown fish named Marlin lives in the Great Barrier Reef and loses his son, Nemo, after he ventures into the open sea, despite his father's constant warnings about many of the ocean's dangers. Nemo is abducted by a boat and netted up and sent to a dentist's office in Sydney. While Marlin ventures off to try to retrieve Nemo, Marlin meets a fish named Dory, a blue tang suffering from short-term memory loss. The companions travel a great distance, encountering various dangerous sea creatures such as sharks, anglerfish and jellyfish, in order to rescue Nemo from the dentist's office, which is situated by Sydney Harbour. While the two are searching the ocean far and wide, Nemo and the other sea animals in the dentist's fish tank plot a way to return to the sea to live their lives free again.
 """
 
 name2 = "-"
 data2 = """
-When her father unexpectedly dies, young Ella finds herself at the mercy of her cruel stepmother and her scheming stepsisters. Never one to give up hope, Ella's fortunes begin to change after meeting a dashing stranger.
+A retired CIA agent travels across Europe and relies on his old skills to save his estranged daughter, who has been kidnapped while on a trip to Paris.
 
-A girl named Ella (Cinderella) has the purest heart living in a cruel world filled with evil stepsisters and an evil stepmother out to ruin Ella's life. Ella becomes one with her pure heart when she meets the Prince and dances her way to a better life with glass shoes, and a little help from her fairy godmother, of course.
-
-A live-action retelling of the classic fairytale about a servant stepdaughter who is abused by her jealous stepmother and stepsisters after her father died. Forced to be a servant in her own house, through it all she did not let anything or anyone crush her spirit. Then one day, she meets a dashing stranger in the woods.
+Seventeen year-old Kim is the pride and joy of her father Bryan Mills. Bryan is a retired agent who left the Central Intelligence Agency to be near Kim in California. Kim lives with her mother Lenore and her wealthy stepfather Stuart. Kim manages to convince her reluctant father to allow her to travel to Paris with her friend Amanda. When the girls arrive in Paris they share a cab with a stranger named Peter, and Amanda lets it slip that they are alone in Paris. Using this information an Albanian gang of human traffickers kidnaps the girls. Kim barely has time to call her father and give him information. Her father gets to speak briefly to one of the kidnappers and he promises to kill the kidnappers if they do not let his daughter go free. The kidnapper wishes him "good luck," so Bryan Mills travels to Paris to search for his daughter and her friend.
 """
 data1 = clean_summary(data1)
 if len(data1) > 512:
@@ -99,7 +99,6 @@ from scipy import stats
 
 print()
 print("Correlation:")
-print("Cosine similarity from labels: ", metrics.pairwise.cosine_similarity([predicts[0]], [predicts[1]])[0][0])
 print("Cosine similarity from probs: ", metrics.pairwise.cosine_similarity([probabilities[0]], [probabilities[1]])[0][0])
-print("Separman correlation:", stats.spearmanr(probabilities[0], probabilities[1])[0])
+print("Spearman correlation:", stats.spearmanr(probabilities[0], probabilities[1])[0])
 print("Pearson correlation:", stats.pearsonr(probabilities[0], probabilities[1])[0])
